@@ -1,4 +1,4 @@
-// Simple 1-player chess game (player vs basic AI)
+// Simple 1-player chess game (player vs multi-level AI)
 const PIECES = {
     wK: '♔', wQ: '♕', wR: '♖', wB: '♗', wN: '♘', wP: '♙',
     bK: '♚', bQ: '♛', bR: '♜', bB: '♝', bN: '♞', bP: '♟',
@@ -18,6 +18,17 @@ let board = [
 let selected = null;
 let turn = 'w'; // 'w' = white (player), 'b' = black (AI)
 let statusDiv = document.getElementById('status');
+let aiLevel = 'easy';
+
+// Menu logic
+const menu = document.getElementById('menu-overlay');
+document.querySelectorAll('.bot-btn').forEach(btn => {
+    btn.onclick = () => {
+        aiLevel = btn.getAttribute('data-diff');
+        menu.style.display = 'none';
+        renderBoard();
+    };
+});
 
 function renderBoard() {
     const chessboard = document.getElementById('chessboard');
@@ -36,7 +47,7 @@ function renderBoard() {
 }
 
 function handleCellClick(r, c) {
-    if (turn !== 'w') return;
+    if (turn !== 'w' || menu.style.display !== 'none') return;
     const piece = board[r][c];
     if (selected) {
         if (isValidMove(selected[0], selected[1], r, c, 'w')) {
@@ -107,17 +118,84 @@ function isPathClear(fromR, fromC, toR, toC) {
     return true;
 }
 
+
 function aiMove() {
-    // Very basic AI: random legal move
+    let moves = getAllLegalMoves('b');
+    if (moves.length === 0) {
+        statusDiv.textContent = "You win! (AI has no moves)";
+        return;
+    }
+    let move;
+    if (aiLevel === 'easy') {
+        // Random move
+        move = moves[Math.floor(Math.random() * moves.length)];
+    } else if (aiLevel === 'medium') {
+        // Prefer captures
+        let captures = moves.filter(m => board[m.toR][m.toC]);
+        move = captures.length ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
+    } else if (aiLevel === 'hard') {
+        // Basic material evaluation, 1-ply
+        let bestScore = -Infinity;
+        let bestMoves = [];
+        for (let m of moves) {
+            let backup = board[m.toR][m.toC];
+            movePiece(m.fromR, m.fromC, m.toR, m.toC);
+            let score = evaluateBoard();
+            board[m.fromR][m.fromC] = board[m.toR][m.toC];
+            board[m.toR][m.toC] = backup;
+            if (score > bestScore) {
+                bestScore = score;
+                bestMoves = [m];
+            } else if (score === bestScore) {
+                bestMoves.push(m);
+            }
+        }
+        move = bestMoves[Math.floor(Math.random() * bestMoves.length)];
+    } else if (aiLevel === 'impossible') {
+        // Minimax 2-ply (AI and player reply)
+        let bestScore = -Infinity;
+        let bestMoves = [];
+        for (let m of moves) {
+            let backup = board[m.toR][m.toC];
+            movePiece(m.fromR, m.fromC, m.toR, m.toC);
+            let replyMoves = getAllLegalMoves('w');
+            let worst = Infinity;
+            for (let rm of replyMoves) {
+                let b2 = board[rm.toR][rm.toC];
+                movePiece(rm.fromR, rm.fromC, rm.toR, rm.toC);
+                let score = evaluateBoard();
+                board[rm.fromR][rm.fromC] = board[rm.toR][rm.toC];
+                board[rm.toR][rm.toC] = b2;
+                if (score < worst) worst = score;
+            }
+            if (replyMoves.length === 0) worst = evaluateBoard();
+            board[m.fromR][m.fromC] = board[m.toR][m.toC];
+            board[m.toR][m.toC] = backup;
+            if (worst > bestScore) {
+                bestScore = worst;
+                bestMoves = [m];
+            } else if (worst === bestScore) {
+                bestMoves.push(m);
+            }
+        }
+        move = bestMoves[Math.floor(Math.random() * bestMoves.length)];
+    }
+    movePiece(move.fromR, move.fromC, move.toR, move.toC);
+    turn = 'w';
+    statusDiv.textContent = "Your move (White)";
+    renderBoard();
+}
+
+function getAllLegalMoves(color) {
     let moves = [];
     for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
             const piece = board[r][c];
-            if (piece && piece[0] === 'b') {
-                for (let dr = -2; dr <= 2; dr++) {
-                    for (let dc = -2; dc <= 2; dc++) {
+            if (piece && piece[0] === color) {
+                for (let dr = -7; dr <= 7; dr++) {
+                    for (let dc = -7; dc <= 7; dc++) {
                         let toR = r + dr, toC = c + dc;
-                        if (toR >= 0 && toR < 8 && toC >= 0 && toC < 8 && isValidMove(r, c, toR, toC, 'b')) {
+                        if (toR >= 0 && toR < 8 && toC >= 0 && toC < 8 && (dr !== 0 || dc !== 0) && isValidMove(r, c, toR, toC, color)) {
                             moves.push({fromR: r, fromC: c, toR, toC});
                         }
                     }
@@ -125,15 +203,24 @@ function aiMove() {
             }
         }
     }
-    if (moves.length === 0) {
-        statusDiv.textContent = "You win! (AI has no moves)";
-        return;
+    return moves;
+}
+
+function evaluateBoard() {
+    // Simple material count
+    const values = {K: 0, Q: 9, R: 5, B: 3, N: 3, P: 1};
+    let score = 0;
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            const piece = board[r][c];
+            if (piece) {
+                let val = values[piece[1]];
+                if (piece[0] === 'b') score += val;
+                else score -= val;
+            }
+        }
     }
-    const move = moves[Math.floor(Math.random() * moves.length)];
-    movePiece(move.fromR, move.fromC, move.toR, move.toC);
-    turn = 'w';
-    statusDiv.textContent = "Your move (White)";
-    renderBoard();
+    return score;
 }
 
 renderBoard();

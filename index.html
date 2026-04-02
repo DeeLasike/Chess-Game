@@ -16,6 +16,15 @@
 </head>
 <body>
     <h1>1 Player Chess Game</h1>
+    <div id="menu-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;">
+        <div style="background:#fff;padding:32px 48px;border-radius:12px;box-shadow:0 4px 24px #0003;text-align:center;">
+            <h2>Select Bot Difficulty</h2>
+            <button class="bot-btn" data-diff="easy">Easy</button>
+            <button class="bot-btn" data-diff="medium">Medium</button>
+            <button class="bot-btn" data-diff="hard">Hard</button>
+            <button class="bot-btn" data-diff="impossible">Impossible</button>
+        </div>
+    </div>
     <div id="status">Your move (White)</div>
     <div id="chessboard"></div>
     <script src="script.js"></script>
