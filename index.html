@@ -243,6 +243,16 @@
             z-index: 6;
             box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.08);
         }
+        .iris::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+        }
         .iris.left { left: 34px; }
         .iris.right { right: 34px; }
         .brow {
@@ -500,6 +510,217 @@
         .tone-warm { --skin-top: #f3d2aa; --skin-bottom: #d39a68; }
         .tone-deep { --skin-top: #c88d61; --skin-bottom: #8d5738; }
         .tone-olive { --skin-top: #e8c09c; --skin-bottom: #be865d; }
+        .char-milo .bot-avatar {
+            border-radius: 38px 38px 28px 28px;
+        }
+        .char-milo .face {
+            inset: 16px 24px 20px;
+            border-radius: 36px 36px 30px 30px;
+        }
+        .char-milo .bot-avatar::after {
+            width: 82px;
+            height: 34px;
+            border-radius: 42px 42px 18px 18px;
+            box-shadow: 0 8px 0 4px var(--hair);
+        }
+        .char-milo .hoodie {
+            width: 90px;
+            border-radius: 30px 30px 10px 10px;
+        }
+
+        .char-poppy .bot-avatar {
+            border-radius: 34px 34px 30px 30px;
+        }
+        .char-poppy .face {
+            inset: 17px 25px 21px;
+            border-radius: 40px 40px 24px 24px;
+        }
+        .char-poppy .eye {
+            width: 13px;
+            height: 13px;
+            top: 46px;
+        }
+        .char-poppy .iris {
+            top: 49px;
+            background: #3e5a4c;
+        }
+        .char-poppy .bot-avatar::after {
+            width: 88px;
+            height: 26px;
+            top: 11px;
+            border-radius: 40px 40px 12px 12px;
+            box-shadow: 0 12px 0 8px var(--hair), 18px 24px 0 -6px var(--hair), -18px 24px 0 -6px var(--hair);
+        }
+        .char-poppy .mouth {
+            width: 22px;
+            border-bottom-width: 2px;
+        }
+        .char-poppy .hoodie {
+            width: 78px;
+            border-radius: 24px 24px 8px 8px;
+        }
+
+        .char-nova .bot-avatar {
+            border-radius: 28px 28px 22px 22px;
+        }
+        .char-nova .face {
+            inset: 18px 20px 20px;
+            border-radius: 28px 28px 20px 20px;
+        }
+        .char-nova .jaw-shadow {
+            width: 46px;
+            height: 20px;
+        }
+        .char-nova .bot-avatar::after {
+            width: 76px;
+            height: 26px;
+            box-shadow: 0 5px 0 2px var(--hair), 0 18px 0 -6px var(--hair);
+        }
+        .char-nova .hoodie {
+            width: 94px;
+            height: 54px;
+        }
+        .char-nova .brow.left { transform: rotate(-4deg); }
+        .char-nova .brow.right { transform: rotate(4deg); }
+
+        .char-kira .bot-avatar {
+            border-radius: 28px;
+        }
+        .char-kira .face {
+            inset: 17px 27px 22px;
+            border-radius: 34px 34px 22px 22px;
+        }
+        .char-kira .eye {
+            width: 11px;
+            height: 9px;
+            top: 48px;
+            border-radius: 10px;
+        }
+        .char-kira .iris {
+            top: 50px;
+            background: #274567;
+        }
+        .char-kira .bot-avatar::after {
+            width: 68px;
+            height: 18px;
+            top: 16px;
+            border-radius: 24px 24px 10px 10px;
+            box-shadow: 0 4px 0 2px var(--hair);
+        }
+        .char-kira .hoodie {
+            width: 84px;
+            height: 50px;
+            border-radius: 20px 20px 6px 6px;
+        }
+
+        .char-rex .bot-avatar {
+            border-radius: 30px 30px 24px 24px;
+        }
+        .char-rex .face {
+            inset: 17px 19px 20px;
+            border-radius: 30px 30px 24px 24px;
+        }
+        .char-rex .bot-avatar::after {
+            width: 74px;
+            height: 22px;
+            top: 14px;
+            border-radius: 34px 34px 10px 10px;
+            box-shadow: 0 6px 0 3px var(--hair), 0 16px 0 -8px var(--hair);
+        }
+        .char-rex .hoodie {
+            width: 98px;
+            height: 56px;
+            border-radius: 32px 32px 10px 10px;
+        }
+        .char-rex .brow.left { transform: rotate(-14deg); }
+        .char-rex .brow.right { transform: rotate(14deg); }
+        .char-rex .eye,
+        .char-rex .iris {
+            top: 49px;
+        }
+
+        .char-iris .bot-avatar {
+            border-radius: 36px 36px 28px 28px;
+        }
+        .char-iris .face {
+            inset: 16px 26px 22px;
+            border-radius: 40px 40px 26px 26px;
+        }
+        .char-iris .bot-avatar::after {
+            width: 80px;
+            height: 22px;
+            top: 10px;
+            border-radius: 38px 38px 8px 8px;
+            box-shadow: 0 10px 0 7px var(--hair);
+        }
+        .char-iris .hoodie {
+            width: 76px;
+            height: 46px;
+            border-radius: 14px 14px 8px 8px;
+        }
+        .char-iris .chain {
+            bottom: 18px;
+            width: 34px;
+        }
+        .char-iris .mouth {
+            width: 20px;
+        }
+
+        .char-zara .bot-avatar {
+            border-radius: 26px 26px 34px 34px;
+        }
+        .char-zara .face {
+            inset: 17px 24px 20px;
+            border-radius: 30px 30px 28px 28px;
+        }
+        .char-zara .bot-avatar::after {
+            width: 86px;
+            height: 24px;
+            top: 9px;
+            border-radius: 38px 24px 12px 12px;
+            transform: translateX(-50%) skewX(-6deg);
+            box-shadow: 10px 8px 0 0 var(--hair), -6px 16px 0 -6px var(--hair);
+        }
+        .char-zara .eye {
+            width: 13px;
+            height: 10px;
+            border-radius: 10px;
+        }
+        .char-zara .iris {
+            background: #2f2f7a;
+        }
+        .char-zara .hoodie {
+            width: 86px;
+            height: 58px;
+            border-radius: 20px 20px 10px 10px;
+        }
+
+        .char-onyx .bot-avatar {
+            border-radius: 24px 24px 30px 30px;
+        }
+        .char-onyx .face {
+            inset: 16px 22px 20px;
+            border-radius: 26px 26px 30px 30px;
+        }
+        .char-onyx .bot-avatar::after {
+            width: 70px;
+            height: 18px;
+            top: 14px;
+            border-radius: 26px 26px 10px 10px;
+            box-shadow: 0 4px 0 2px var(--hair), 0 10px 0 3px var(--hair);
+        }
+        .char-onyx .hoodie {
+            width: 92px;
+            height: 54px;
+            border-radius: 26px 26px 8px 8px;
+        }
+        .char-onyx .mustache {
+            width: 36px;
+        }
+        .char-onyx .eye,
+        .char-onyx .iris {
+            top: 48px;
+        }
         @media (max-width: 860px) {
             .bot-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -530,7 +751,7 @@
             <h2>Select Bot Difficulty</h2>
             <p class="menu-subtitle">Choose which AI challenger you want to play.</p>
             <div class="bot-grid">
-                <button class="bot-btn bot-easy tone-light" data-diff="easy">
+                <button class="bot-btn bot-easy tone-light char-milo" data-diff="easy">
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -555,7 +776,7 @@
                     <span class="bot-name">Milo Spark</span>
                     <span class="bot-note">Casual learner bot</span>
                 </button>
-                <button class="bot-btn bot-easy tone-warm" data-diff="easy">
+                <button class="bot-btn bot-easy tone-warm char-poppy" data-diff="easy">
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -580,7 +801,7 @@
                     <span class="bot-name">Poppy Flux</span>
                     <span class="bot-note">Friendly opener bot</span>
                 </button>
-                <button class="bot-btn bot-medium tone-olive" data-diff="medium">
+                <button class="bot-btn bot-medium tone-olive char-nova" data-diff="medium">
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -605,7 +826,7 @@
                     <span class="bot-name">Nova Byte</span>
                     <span class="bot-note">Balanced tactical bot</span>
                 </button>
-                <button class="bot-btn bot-medium tone-deep" data-diff="medium">
+                <button class="bot-btn bot-medium tone-deep char-kira" data-diff="medium">
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -630,7 +851,7 @@
                     <span class="bot-name">Kira Vector</span>
                     <span class="bot-note">Steady counterplay bot</span>
                 </button>
-                <button class="bot-btn bot-hard tone-warm" data-diff="hard">
+                <button class="bot-btn bot-hard tone-warm char-rex" data-diff="hard">
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -655,7 +876,7 @@
                     <span class="bot-name">Rex Meridian</span>
                     <span class="bot-note">Sharp attacking bot</span>
                 </button>
-                <button class="bot-btn bot-hard tone-light" data-diff="hard">
+                <button class="bot-btn bot-hard tone-light char-iris" data-diff="hard">
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -681,7 +902,7 @@
                     <span class="bot-name">Iris Quill</span>
                     <span class="bot-note">Methodical pressure bot</span>
                 </button>
-                <button class="bot-btn bot-impossible tone-olive" data-diff="impossible">
+                <button class="bot-btn bot-impossible tone-olive char-zara" data-diff="impossible">
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
@@ -708,7 +929,7 @@
                     <span class="bot-name">Zara Hex</span>
                     <span class="bot-note">Relentless master bot</span>
                 </button>
-                <button class="bot-btn bot-impossible tone-deep" data-diff="impossible">
+                <button class="bot-btn bot-impossible tone-deep char-onyx" data-diff="impossible">
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
