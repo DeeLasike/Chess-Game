@@ -105,21 +105,30 @@
         }
         .bot-btn {
             border: none;
-            border-radius: 16px;
-            background: linear-gradient(180deg, #fffdfa 0%, #f1e4ce 100%);
-            padding: 18px 16px 20px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255, 252, 245, 0.96) 0%, rgba(241, 228, 206, 0.94) 100%);
+            padding: 20px 16px 22px;
             cursor: pointer;
-            box-shadow: 0 10px 18px rgba(88, 59, 37, 0.18);
-            transition: transform 140ms ease, box-shadow 140ms ease;
+            box-shadow: 0 14px 24px rgba(88, 59, 37, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+            transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
             color: #2d221c;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .bot-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 48%);
+            z-index: -1;
         }
         .bot-btn:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 24px rgba(88, 59, 37, 0.25);
+            box-shadow: 0 20px 30px rgba(88, 59, 37, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
         .bot-label {
             display: inline-block;
@@ -134,20 +143,20 @@
             margin-bottom: 0;
             padding: 6px 12px;
             border-radius: 999px;
-            background: rgba(46, 33, 25, 0.88);
+            background: rgba(35, 30, 28, 0.9);
             color: #fff7ea;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
             z-index: 2;
         }
         .bot-avatar {
-            width: 98px;
-            height: 98px;
-            margin: 28px auto 14px;
-            border-radius: 50%;
+            width: 112px;
+            height: 124px;
+            margin: 26px auto 14px;
+            border-radius: 34px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 -8px 16px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
-            background: radial-gradient(circle at 50% 35%, #f8e8d0 0%, #e1bc96 62%, #c18658 100%);
+            box-shadow: inset 0 -12px 22px rgba(0, 0, 0, 0.14), 0 10px 18px rgba(0, 0, 0, 0.14);
+            background: linear-gradient(180deg, rgba(255, 251, 243, 0.95) 0%, rgba(226, 204, 176, 0.9) 100%);
         }
         .bot-avatar * {
             position: absolute;
@@ -157,58 +166,100 @@
             content: '';
             position: absolute;
             left: 50%;
-            bottom: -10px;
-            width: 110px;
-            height: 58px;
+            bottom: -12px;
+            width: 128px;
+            height: 64px;
             transform: translateX(-50%);
-            border-radius: 44px 44px 10px 10px;
-            background: var(--shirt, #5c7cfa);
+            border-radius: 46px 46px 16px 16px;
+            background: linear-gradient(180deg, var(--shirt-light, #7c98ff), var(--shirt, #5c7cfa));
             z-index: 1;
         }
         .bot-avatar::after {
             content: '';
             position: absolute;
             left: 50%;
-            top: 10px;
-            width: 72px;
-            height: 28px;
+            top: 8px;
+            width: 78px;
+            height: 30px;
             transform: translateX(-50%);
-            border-radius: 36px 36px 20px 20px;
-            background: var(--hair, #4f3526);
-            box-shadow: 0 4px 0 4px var(--hair, #4f3526);
+            border-radius: 38px 38px 16px 16px;
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
+            box-shadow: 0 6px 0 3px var(--hair, #4f3526);
             z-index: 2;
         }
         .face {
-            inset: 20px 21px 16px;
-            border-radius: 32px 32px 28px 28px;
+            inset: 18px 23px 22px;
+            border-radius: 36px 36px 28px 28px;
             background: linear-gradient(180deg, var(--skin-top, rgba(250, 234, 214, 0.95)), var(--skin-bottom, rgba(234, 194, 151, 0.98)));
             z-index: 3;
         }
+        .jaw-shadow {
+            left: 50%;
+            bottom: 22px;
+            width: 40px;
+            height: 18px;
+            transform: translateX(-50%);
+            border-radius: 0 0 20px 20px;
+            background: rgba(128, 83, 61, 0.12);
+            z-index: 4;
+        }
+        .neck {
+            left: 50%;
+            bottom: 22px;
+            width: 20px;
+            height: 18px;
+            transform: translateX(-50%);
+            border-radius: 0 0 10px 10px;
+            background: linear-gradient(180deg, var(--skin-bottom, rgba(234, 194, 151, 0.98)), rgba(177, 118, 84, 0.9));
+            z-index: 2;
+        }
+        .ear {
+            top: 52px;
+            width: 10px;
+            height: 18px;
+            border-radius: 10px;
+            background: var(--skin-bottom, rgba(234, 194, 151, 0.98));
+            z-index: 2;
+        }
+        .ear.left { left: 18px; }
+        .ear.right { right: 18px; }
         .eye {
-            top: 38px;
-            width: 8px;
-            height: 8px;
+            top: 47px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: #2a201b;
+            background: #fffdf7;
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
             z-index: 5;
         }
-        .eye.left { left: 33px; }
-        .eye.right { right: 33px; }
+        .eye.left { left: 31px; }
+        .eye.right { right: 31px; }
+        .iris {
+            top: 50px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--eye, #2b2726);
+            z-index: 6;
+            box-shadow: 0 0 0 1px rgba(20, 18, 16, 0.08);
+        }
+        .iris.left { left: 34px; }
+        .iris.right { right: 34px; }
         .brow {
-            top: 31px;
-            width: 16px;
+            top: 39px;
+            width: 18px;
             height: 3px;
             border-radius: 999px;
             background: rgba(40, 28, 22, 0.72);
             z-index: 5;
         }
-        .brow.left { left: 29px; transform: rotate(-10deg); }
-        .brow.right { right: 29px; transform: rotate(10deg); }
+        .brow.left { left: 28px; transform: rotate(-10deg); }
+        .brow.right { right: 28px; transform: rotate(10deg); }
         .nose {
             left: 50%;
-            top: 42px;
+            top: 54px;
             width: 8px;
-            height: 14px;
+            height: 15px;
             transform: translateX(-50%);
             border-radius: 40% 40% 55% 55%;
             background: rgba(164, 104, 79, 0.24);
@@ -216,18 +267,29 @@
         }
         .mouth {
             left: 50%;
-            top: 58px;
-            width: 24px;
+            top: 74px;
+            width: 26px;
             height: 12px;
             transform: translateX(-50%);
             border-bottom: 3px solid #8e4c56;
             border-radius: 0 0 18px 18px;
             z-index: 5;
         }
+        .cheek {
+            top: 67px;
+            width: 12px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(229, 136, 132, 0.18);
+            filter: blur(1px);
+            z-index: 4;
+        }
+        .cheek.left { left: 26px; }
+        .cheek.right { right: 26px; }
         .mustache {
             left: 50%;
-            top: 53px;
-            width: 28px;
+            top: 68px;
+            width: 32px;
             height: 10px;
             transform: translateX(-50%);
             border-radius: 12px;
@@ -236,30 +298,30 @@
         }
         .beard {
             left: 50%;
-            bottom: 17px;
-            width: 34px;
-            height: 24px;
+            bottom: 20px;
+            width: 38px;
+            height: 26px;
             transform: translateX(-50%);
             border-radius: 12px 12px 18px 18px;
-            background: var(--hair, #4f3526);
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
             opacity: 0.92;
             z-index: 4;
         }
         .goatee {
             left: 50%;
-            bottom: 19px;
+            bottom: 21px;
             width: 12px;
             height: 16px;
             transform: translateX(-50%);
             border-radius: 0 0 10px 10px;
-            background: var(--hair, #4f3526);
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
             z-index: 5;
         }
         .glasses {
             left: 50%;
-            top: 34px;
-            width: 44px;
-            height: 16px;
+            top: 44px;
+            width: 48px;
+            height: 18px;
             transform: translateX(-50%);
             z-index: 6;
         }
@@ -268,16 +330,17 @@
             content: '';
             position: absolute;
             top: 0;
-            width: 14px;
-            height: 12px;
+            width: 16px;
+            height: 13px;
             border: 2px solid rgba(33, 28, 28, 0.82);
-            border-radius: 5px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
         }
         .glasses::before { left: 4px; }
         .glasses::after { right: 4px; }
         .glasses-bridge {
             left: 50%;
-            top: 40px;
+            top: 51px;
             width: 10px;
             height: 2px;
             transform: translateX(-50%);
@@ -286,7 +349,7 @@
         }
         .monocle {
             left: 27px;
-            top: 33px;
+            top: 43px;
             width: 16px;
             height: 16px;
             border: 2px solid rgba(166, 126, 34, 0.92);
@@ -305,12 +368,12 @@
         }
         .cap {
             left: 50%;
-            top: 10px;
-            width: 68px;
-            height: 24px;
+            top: 7px;
+            width: 76px;
+            height: 28px;
             transform: translateX(-50%);
             border-radius: 28px 28px 14px 14px;
-            background: #22353f;
+            background: linear-gradient(180deg, #324c5d, #22353f);
             z-index: 7;
         }
         .cap::after {
@@ -326,17 +389,83 @@
         }
         .bow {
             left: 50%;
-            bottom: 8px;
-            width: 16px;
-            height: 10px;
+            bottom: 14px;
+            width: 18px;
+            height: 12px;
             transform: translateX(-50%);
             background: #b23a48;
             clip-path: polygon(50% 50%, 100% 0, 100% 100%, 50% 62%, 0 100%, 0 0);
             z-index: 6;
         }
+        .hoodie {
+            left: 50%;
+            bottom: 0;
+            width: 82px;
+            height: 52px;
+            transform: translateX(-50%);
+            border-radius: 28px 28px 8px 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent 24%), linear-gradient(180deg, var(--shirt-light, #7c98ff), var(--shirt, #5c7cfa));
+            z-index: 1;
+        }
+        .hoodie::before,
+        .hoodie::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            width: 18px;
+            height: 24px;
+            border-radius: 18px 18px 8px 8px;
+            background: rgba(255,255,255,0.12);
+        }
+        .hoodie::before { left: 14px; transform: rotate(16deg); }
+        .hoodie::after { right: 14px; transform: rotate(-16deg); }
+        .chain {
+            left: 50%;
+            bottom: 20px;
+            width: 28px;
+            height: 14px;
+            transform: translateX(-50%);
+            border-bottom: 2px solid rgba(211, 178, 93, 0.95);
+            border-radius: 0 0 20px 20px;
+            z-index: 3;
+        }
+        .headset {
+            left: 50%;
+            top: 28px;
+            width: 74px;
+            height: 56px;
+            transform: translateX(-50%);
+            border: 4px solid rgba(46, 53, 64, 0.92);
+            border-bottom: none;
+            border-radius: 40px 40px 0 0;
+            z-index: 6;
+        }
+        .headset::before,
+        .headset::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            width: 10px;
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(46, 53, 64, 0.92);
+        }
+        .headset::before { left: -7px; }
+        .headset::after { right: -7px; }
+        .visor {
+            left: 50%;
+            top: 38px;
+            width: 48px;
+            height: 14px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(53, 223, 255, 0.6), rgba(114, 114, 255, 0.5));
+            z-index: 6;
+            box-shadow: 0 0 12px rgba(53, 223, 255, 0.25);
+        }
         .earring {
             right: 18px;
-            top: 53px;
+            top: 63px;
             width: 8px;
             height: 12px;
             border: 2px solid #cfab4a;
@@ -345,7 +474,7 @@
         }
         .scar {
             left: 35px;
-            top: 28px;
+            top: 38px;
             width: 3px;
             height: 18px;
             background: rgba(151, 58, 58, 0.48);
@@ -363,10 +492,10 @@
             font-size: 14px;
             color: #735948;
         }
-        .bot-easy { --shirt: #4daf7c; --hair: #5a3a28; }
-        .bot-medium { --shirt: #4b70d1; --hair: #2d2320; }
-        .bot-hard { --shirt: #cc7a3d; --hair: #6a4337; }
-        .bot-impossible { --shirt: #7c4fd6; --hair: #1e1d2c; }
+        .bot-easy { --shirt: #4daf7c; --shirt-light: #79d9a6; --hair: #5a3a28; --hair-shine: #7c5540; --eye: #2f4b3b; }
+        .bot-medium { --shirt: #4b70d1; --shirt-light: #86a5ff; --hair: #2d2320; --hair-shine: #54413b; --eye: #35517e; }
+        .bot-hard { --shirt: #cc7a3d; --shirt-light: #f0a66a; --hair: #6a4337; --hair-shine: #946154; --eye: #5f3f2e; }
+        .bot-impossible { --shirt: #7c4fd6; --shirt-light: #af84ff; --hair: #1e1d2c; --hair-shine: #4e496d; --eye: #3a2f66; }
         .tone-light { --skin-top: #fdebd5; --skin-bottom: #efc89e; }
         .tone-warm { --skin-top: #f3d2aa; --skin-bottom: #d39a68; }
         .tone-deep { --skin-top: #c88d61; --skin-bottom: #8d5738; }
@@ -404,12 +533,21 @@
                 <button class="bot-btn bot-easy tone-light" data-diff="easy">
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="glasses"></span>
                         <span class="glasses-bridge"></span>
@@ -420,12 +558,21 @@
                 <button class="bot-btn bot-easy tone-warm" data-diff="easy">
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="bow"></span>
                         <span class="earring"></span>
@@ -436,14 +583,24 @@
                 <button class="bot-btn bot-medium tone-olive" data-diff="medium">
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="mustache"></span>
+                        <span class="chain"></span>
                     </span>
                     <span class="bot-name">Nova Byte</span>
                     <span class="bot-note">Balanced tactical bot</span>
@@ -451,14 +608,24 @@
                 <button class="bot-btn bot-medium tone-deep" data-diff="medium">
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="cap"></span>
+                        <span class="headset"></span>
                     </span>
                     <span class="bot-name">Kira Vector</span>
                     <span class="bot-note">Steady counterplay bot</span>
@@ -466,12 +633,21 @@
                 <button class="bot-btn bot-hard tone-warm" data-diff="hard">
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="beard"></span>
                         <span class="scar"></span>
@@ -482,15 +658,25 @@
                 <button class="bot-btn bot-hard tone-light" data-diff="hard">
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="monocle"></span>
                         <span class="goatee"></span>
+                        <span class="chain"></span>
                     </span>
                     <span class="bot-name">Iris Quill</span>
                     <span class="bot-note">Methodical pressure bot</span>
@@ -498,16 +684,26 @@
                 <button class="bot-btn bot-impossible tone-olive" data-diff="impossible">
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="glasses"></span>
                         <span class="glasses-bridge"></span>
                         <span class="beard"></span>
+                        <span class="visor"></span>
                     </span>
                     <span class="bot-name">Zara Hex</span>
                     <span class="bot-note">Relentless master bot</span>
@@ -515,15 +711,25 @@
                 <button class="bot-btn bot-impossible tone-deep" data-diff="impossible">
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
+                        <span class="hoodie"></span>
+                        <span class="neck"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="jaw-shadow"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
+                        <span class="iris left"></span>
+                        <span class="iris right"></span>
                         <span class="nose"></span>
+                        <span class="cheek left"></span>
+                        <span class="cheek right"></span>
                         <span class="mouth"></span>
                         <span class="cap"></span>
                         <span class="mustache"></span>
+                        <span class="headset"></span>
                     </span>
                     <span class="bot-name">Onyx Vale</span>
                     <span class="bot-note">Cold calculation bot</span>
