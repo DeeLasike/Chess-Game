@@ -163,23 +163,26 @@
             transform: translateX(-50%);
             border-radius: 44px 44px 10px 10px;
             background: var(--shirt, #5c7cfa);
+            z-index: 1;
         }
         .bot-avatar::after {
             content: '';
             position: absolute;
             left: 50%;
-            top: 14px;
+            top: 10px;
             width: 72px;
-            height: 42px;
+            height: 28px;
             transform: translateX(-50%);
             border-radius: 36px 36px 20px 20px;
             background: var(--hair, #4f3526);
-            box-shadow: 0 8px 0 8px var(--hair, #4f3526);
+            box-shadow: 0 4px 0 4px var(--hair, #4f3526);
+            z-index: 2;
         }
         .face {
-            inset: 22px 21px 18px;
+            inset: 20px 21px 16px;
             border-radius: 32px 32px 28px 28px;
             background: linear-gradient(180deg, var(--skin-top, rgba(250, 234, 214, 0.95)), var(--skin-bottom, rgba(234, 194, 151, 0.98)));
+            z-index: 3;
         }
         .eye {
             top: 38px;
@@ -187,6 +190,7 @@
             height: 8px;
             border-radius: 50%;
             background: #2a201b;
+            z-index: 5;
         }
         .eye.left { left: 33px; }
         .eye.right { right: 33px; }
@@ -196,6 +200,7 @@
             height: 3px;
             border-radius: 999px;
             background: rgba(40, 28, 22, 0.72);
+            z-index: 5;
         }
         .brow.left { left: 29px; transform: rotate(-10deg); }
         .brow.right { right: 29px; transform: rotate(10deg); }
@@ -207,6 +212,7 @@
             transform: translateX(-50%);
             border-radius: 40% 40% 55% 55%;
             background: rgba(164, 104, 79, 0.24);
+            z-index: 4;
         }
         .mouth {
             left: 50%;
@@ -216,6 +222,7 @@
             transform: translateX(-50%);
             border-bottom: 3px solid #8e4c56;
             border-radius: 0 0 18px 18px;
+            z-index: 5;
         }
         .mustache {
             left: 50%;
@@ -225,6 +232,7 @@
             transform: translateX(-50%);
             border-radius: 12px;
             background: linear-gradient(90deg, transparent 0%, var(--hair, #4f3526) 18%, var(--hair, #4f3526) 82%, transparent 100%);
+            z-index: 6;
         }
         .beard {
             left: 50%;
@@ -235,6 +243,7 @@
             border-radius: 12px 12px 18px 18px;
             background: var(--hair, #4f3526);
             opacity: 0.92;
+            z-index: 4;
         }
         .goatee {
             left: 50%;
@@ -244,6 +253,7 @@
             transform: translateX(-50%);
             border-radius: 0 0 10px 10px;
             background: var(--hair, #4f3526);
+            z-index: 5;
         }
         .glasses {
             left: 50%;
@@ -251,6 +261,7 @@
             width: 44px;
             height: 16px;
             transform: translateX(-50%);
+            z-index: 6;
         }
         .glasses::before,
         .glasses::after {
@@ -271,6 +282,7 @@
             height: 2px;
             transform: translateX(-50%);
             background: rgba(33, 28, 28, 0.82);
+            z-index: 6;
         }
         .monocle {
             left: 27px;
@@ -279,6 +291,7 @@
             height: 16px;
             border: 2px solid rgba(166, 126, 34, 0.92);
             border-radius: 50%;
+            z-index: 6;
         }
         .monocle::after {
             content: '';
@@ -298,6 +311,7 @@
             transform: translateX(-50%);
             border-radius: 28px 28px 14px 14px;
             background: #22353f;
+            z-index: 7;
         }
         .cap::after {
             content: '';
@@ -318,6 +332,7 @@
             transform: translateX(-50%);
             background: #b23a48;
             clip-path: polygon(50% 50%, 100% 0, 100% 100%, 50% 62%, 0 100%, 0 0);
+            z-index: 6;
         }
         .earring {
             right: 18px;
@@ -326,6 +341,7 @@
             height: 12px;
             border: 2px solid #cfab4a;
             border-radius: 50%;
+            z-index: 6;
         }
         .scar {
             left: 35px;
@@ -334,6 +350,7 @@
             height: 18px;
             background: rgba(151, 58, 58, 0.48);
             transform: rotate(18deg);
+            z-index: 6;
         }
         .bot-name {
             display: block;
