@@ -193,6 +193,27 @@
             background: linear-gradient(180deg, var(--skin-top, rgba(250, 234, 214, 0.95)), var(--skin-bottom, rgba(234, 194, 151, 0.98)));
             z-index: 3;
         }
+        .forehead-shine {
+            left: 50%;
+            top: 24px;
+            width: 30px;
+            height: 14px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 72%);
+            z-index: 4;
+        }
+        .temple-shadow {
+            top: 44px;
+            width: 10px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(126, 84, 62, 0.1);
+            filter: blur(1px);
+            z-index: 4;
+        }
+        .temple-shadow.left { left: 21px; }
+        .temple-shadow.right { right: 21px; }
         .jaw-shadow {
             left: 50%;
             bottom: 22px;
@@ -202,6 +223,28 @@
             border-radius: 0 0 20px 20px;
             background: rgba(128, 83, 61, 0.12);
             z-index: 4;
+        }
+        .jawline {
+            left: 50%;
+            bottom: 19px;
+            width: 46px;
+            height: 24px;
+            transform: translateX(-50%);
+            border-bottom: 2px solid rgba(120, 74, 55, 0.34);
+            border-left: 1px solid rgba(120, 74, 55, 0.14);
+            border-right: 1px solid rgba(120, 74, 55, 0.14);
+            border-radius: 0 0 24px 24px;
+            z-index: 4;
+        }
+        .chin-line {
+            left: 50%;
+            bottom: 23px;
+            width: 18px;
+            height: 8px;
+            transform: translateX(-50%);
+            border-bottom: 2px solid rgba(120, 74, 55, 0.26);
+            border-radius: 0 0 12px 12px;
+            z-index: 5;
         }
         .neck {
             left: 50%;
@@ -234,6 +277,26 @@
         }
         .eye.left { left: 31px; }
         .eye.right { right: 31px; }
+        .eyelid {
+            top: 45px;
+            width: 16px;
+            height: 8px;
+            border-top: 2px solid rgba(128, 87, 68, 0.38);
+            border-radius: 50%;
+            z-index: 6;
+        }
+        .eyelid.left { left: 29px; }
+        .eyelid.right { right: 29px; }
+        .lash {
+            top: 44px;
+            width: 14px;
+            height: 5px;
+            border-top: 2px solid rgba(42, 32, 27, 0.45);
+            border-radius: 50%;
+            z-index: 6;
+        }
+        .lash.left { left: 30px; }
+        .lash.right { right: 30px; }
         .iris {
             top: 50px;
             width: 6px;
@@ -275,6 +338,26 @@
             background: rgba(164, 104, 79, 0.24);
             z-index: 4;
         }
+        .nose-bridge {
+            left: 50%;
+            top: 47px;
+            width: 3px;
+            height: 12px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.18);
+            z-index: 5;
+        }
+        .nostril {
+            top: 66px;
+            width: 4px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(132, 81, 62, 0.25);
+            z-index: 5;
+        }
+        .nostril.left { left: 50px; }
+        .nostril.right { right: 50px; }
         .mouth {
             left: 50%;
             top: 74px;
@@ -284,6 +367,35 @@
             border-bottom: 3px solid #8e4c56;
             border-radius: 0 0 18px 18px;
             z-index: 5;
+        }
+        .philtrum {
+            left: 50%;
+            top: 71px;
+            width: 2px;
+            height: 5px;
+            transform: translateX(-50%);
+            background: rgba(147, 88, 85, 0.18);
+            z-index: 5;
+        }
+        .upper-lip {
+            left: 50%;
+            top: 76px;
+            width: 20px;
+            height: 4px;
+            transform: translateX(-50%);
+            border-top: 2px solid rgba(150, 83, 95, 0.35);
+            border-radius: 50%;
+            z-index: 5;
+        }
+        .lower-lip {
+            left: 50%;
+            top: 81px;
+            width: 18px;
+            height: 6px;
+            transform: translateX(-50%);
+            border-radius: 0 0 12px 12px;
+            background: rgba(187, 112, 116, 0.18);
+            z-index: 4;
         }
         .cheek {
             top: 67px;
@@ -296,6 +408,16 @@
         }
         .cheek.left { left: 26px; }
         .cheek.right { right: 26px; }
+        .chin-highlight {
+            left: 50%;
+            bottom: 28px;
+            width: 16px;
+            height: 8px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            z-index: 4;
+        }
         .mustache {
             left: 50%;
             top: 68px;
@@ -303,8 +425,29 @@
             height: 10px;
             transform: translateX(-50%);
             border-radius: 12px;
-            background: linear-gradient(90deg, transparent 0%, var(--hair, #4f3526) 18%, var(--hair, #4f3526) 82%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, var(--hair-shine, #705040) 14%, var(--hair, #4f3526) 38%, var(--hair, #4f3526) 62%, var(--hair-shine, #705040) 86%, transparent 100%);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.14);
             z-index: 6;
+        }
+        .mustache::before,
+        .mustache::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            width: 14px;
+            height: 8px;
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
+            border-radius: 10px;
+        }
+        .mustache::before {
+            left: 1px;
+            transform: rotate(8deg);
+            clip-path: polygon(0 35%, 100% 0, 100% 100%, 0 100%);
+        }
+        .mustache::after {
+            right: 1px;
+            transform: rotate(-8deg);
+            clip-path: polygon(0 0, 100% 35%, 100% 100%, 0 100%);
         }
         .beard {
             left: 50%;
@@ -317,6 +460,14 @@
             opacity: 0.92;
             z-index: 4;
         }
+        .beard::before {
+            content: '';
+            position: absolute;
+            inset: 2px 4px 5px;
+            border-radius: 10px 10px 14px 14px;
+            background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 2px, rgba(0, 0, 0, 0.04) 2px 4px);
+            opacity: 0.45;
+        }
         .goatee {
             left: 50%;
             bottom: 21px;
@@ -326,6 +477,13 @@
             border-radius: 0 0 10px 10px;
             background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
             z-index: 5;
+        }
+        .goatee::before {
+            content: '';
+            position: absolute;
+            inset: 1px 2px 4px;
+            border-radius: 0 0 8px 8px;
+            background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 2px, rgba(0, 0, 0, 0.03) 2px 4px);
         }
         .glasses {
             left: 50%;
@@ -417,6 +575,26 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent 24%), linear-gradient(180deg, var(--shirt-light, #7c98ff), var(--shirt, #5c7cfa));
             z-index: 1;
         }
+        .inner-shirt {
+            left: 50%;
+            bottom: 0;
+            width: 34px;
+            height: 34px;
+            transform: translateX(-50%);
+            border-radius: 12px 12px 4px 4px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(230,230,230,0.88));
+            z-index: 2;
+        }
+        .collar {
+            bottom: 22px;
+            width: 16px;
+            height: 18px;
+            background: rgba(255,255,255,0.92);
+            clip-path: polygon(0 0, 100% 0, 58% 100%, 42% 100%);
+            z-index: 3;
+        }
+        .collar.left { left: 36px; transform: rotate(10deg); }
+        .collar.right { right: 36px; transform: rotate(-10deg); }
         .hoodie::before,
         .hoodie::after {
             content: '';
@@ -473,6 +651,36 @@
             z-index: 6;
             box-shadow: 0 0 12px rgba(53, 223, 255, 0.25);
         }
+        .hair-strand {
+            top: 14px;
+            width: 16px;
+            height: 34px;
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
+            border-radius: 8px 8px 14px 14px;
+            z-index: 7;
+            opacity: 0.92;
+            box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.08), inset -1px 0 0 rgba(0, 0, 0, 0.08);
+        }
+        .hair-strand.left { left: 18px; transform: rotate(10deg); }
+        .hair-strand.right { right: 18px; transform: rotate(-10deg); }
+        .hair-strand::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 2px, rgba(0, 0, 0, 0.02) 2px 4px);
+            border-radius: inherit;
+            opacity: 0.5;
+        }
+        .sideburn {
+            top: 36px;
+            width: 8px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--hair-shine, #705040), var(--hair, #4f3526));
+            border-radius: 0 0 8px 8px;
+            z-index: 6;
+        }
+        .sideburn.left { left: 20px; }
+        .sideburn.right { right: 20px; }
         .earring {
             right: 18px;
             top: 63px;
@@ -527,6 +735,16 @@
             width: 90px;
             border-radius: 30px 30px 10px 10px;
         }
+        .char-milo .glasses,
+        .char-milo .glasses-bridge {
+            top: 46px;
+        }
+        .char-milo .glasses {
+            width: 46px;
+        }
+        .char-milo .jawline {
+            width: 44px;
+        }
 
         .char-poppy .bot-avatar {
             border-radius: 34px 34px 30px 30px;
@@ -559,6 +777,29 @@
             width: 78px;
             border-radius: 24px 24px 8px 8px;
         }
+        .char-poppy .hair-strand.left {
+            left: 14px;
+            width: 20px;
+            height: 38px;
+            transform: rotate(18deg);
+        }
+        .char-poppy .hair-strand.right {
+            right: 14px;
+            width: 20px;
+            height: 38px;
+            transform: rotate(-18deg);
+        }
+        .char-poppy .jawline {
+            width: 38px;
+            border-bottom-color: rgba(120, 74, 55, 0.22);
+        }
+        .char-poppy .earring {
+            right: 19px;
+            top: 61px;
+        }
+        .char-poppy .bow {
+            bottom: 16px;
+        }
 
         .char-nova .bot-avatar {
             border-radius: 28px 28px 22px 22px;
@@ -582,6 +823,18 @@
         }
         .char-nova .brow.left { transform: rotate(-4deg); }
         .char-nova .brow.right { transform: rotate(4deg); }
+        .char-nova .mustache {
+            top: 69px;
+            width: 34px;
+        }
+        .char-nova .jawline {
+            width: 50px;
+            bottom: 18px;
+        }
+        .char-nova .hair-strand.left {
+            left: 16px;
+            height: 28px;
+        }
 
         .char-kira .bot-avatar {
             border-radius: 28px;
@@ -612,6 +865,18 @@
             height: 50px;
             border-radius: 20px 20px 6px 6px;
         }
+        .char-kira .headset {
+            top: 26px;
+            width: 70px;
+        }
+        .char-kira .cap {
+            top: 8px;
+            width: 72px;
+        }
+        .char-kira .jawline {
+            width: 40px;
+            bottom: 20px;
+        }
 
         .char-rex .bot-avatar {
             border-radius: 30px 30px 24px 24px;
@@ -637,6 +902,21 @@
         .char-rex .eye,
         .char-rex .iris {
             top: 49px;
+        }
+        .char-rex .beard {
+            width: 40px;
+            height: 28px;
+            bottom: 18px;
+            border-radius: 10px 10px 20px 20px;
+        }
+        .char-rex .jawline {
+            width: 52px;
+            bottom: 17px;
+        }
+        .char-rex .scar {
+            left: 34px;
+            top: 40px;
+            height: 16px;
         }
 
         .char-iris .bot-avatar {
@@ -664,6 +944,18 @@
         }
         .char-iris .mouth {
             width: 20px;
+        }
+        .char-iris .monocle {
+            left: 29px;
+            top: 45px;
+        }
+        .char-iris .goatee {
+            width: 14px;
+            height: 18px;
+            bottom: 20px;
+        }
+        .char-iris .jawline {
+            width: 42px;
         }
 
         .char-zara .bot-avatar {
@@ -694,6 +986,23 @@
             height: 58px;
             border-radius: 20px 20px 10px 10px;
         }
+        .char-zara .glasses,
+        .char-zara .glasses-bridge {
+            top: 45px;
+        }
+        .char-zara .visor {
+            top: 39px;
+            width: 46px;
+        }
+        .char-zara .beard {
+            width: 34px;
+            height: 22px;
+            bottom: 21px;
+        }
+        .char-zara .jawline {
+            width: 46px;
+            border-bottom-color: rgba(120, 74, 55, 0.28);
+        }
 
         .char-onyx .bot-avatar {
             border-radius: 24px 24px 30px 30px;
@@ -720,6 +1029,21 @@
         .char-onyx .eye,
         .char-onyx .iris {
             top: 48px;
+        }
+        .char-onyx .mustache {
+            top: 70px;
+            width: 38px;
+        }
+        .char-onyx .headset {
+            top: 27px;
+            width: 72px;
+        }
+        .char-onyx .cap {
+            top: 8px;
+        }
+        .char-onyx .jawline {
+            width: 50px;
+            bottom: 18px;
         }
         @media (max-width: 860px) {
             .bot-grid {
@@ -755,21 +1079,44 @@
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
+                        <span class="collar left"></span>
+                        <span class="collar right"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
+                        <span class="lash left"></span>
+                        <span class="lash right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand left"></span>
+                        <span class="hair-strand right"></span>
                         <span class="glasses"></span>
                         <span class="glasses-bridge"></span>
                     </span>
@@ -780,21 +1127,42 @@
                     <span class="bot-label">Easy</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
+                        <span class="lash left"></span>
+                        <span class="lash right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand left"></span>
+                        <span class="hair-strand right"></span>
                         <span class="bow"></span>
                         <span class="earring"></span>
                     </span>
@@ -805,22 +1173,42 @@
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
+                        <span class="collar left"></span>
+                        <span class="collar right"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
                         <span class="mustache"></span>
+                        <span class="hair-strand left"></span>
                         <span class="chain"></span>
                     </span>
                     <span class="bot-name">Nova Byte</span>
@@ -830,21 +1218,39 @@
                     <span class="bot-label">Medium</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
+                        <span class="lash left"></span>
+                        <span class="lash right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand right"></span>
                         <span class="cap"></span>
                         <span class="headset"></span>
                     </span>
@@ -855,20 +1261,39 @@
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
+                        <span class="collar left"></span>
+                        <span class="collar right"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
                         <span class="beard"></span>
                         <span class="scar"></span>
@@ -880,21 +1305,42 @@
                     <span class="bot-label">Hard</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
+                        <span class="lash left"></span>
+                        <span class="lash right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand left"></span>
+                        <span class="hair-strand right"></span>
                         <span class="monocle"></span>
                         <span class="goatee"></span>
                         <span class="chain"></span>
@@ -906,21 +1352,40 @@
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
+                        <span class="lash left"></span>
+                        <span class="lash right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand left"></span>
                         <span class="glasses"></span>
                         <span class="glasses-bridge"></span>
                         <span class="beard"></span>
@@ -933,21 +1398,41 @@
                     <span class="bot-label">Impossible</span>
                     <span class="bot-avatar">
                         <span class="hoodie"></span>
+                        <span class="inner-shirt"></span>
+                        <span class="collar left"></span>
+                        <span class="collar right"></span>
                         <span class="neck"></span>
                         <span class="ear left"></span>
                         <span class="ear right"></span>
                         <span class="face"></span>
+                        <span class="forehead-shine"></span>
+                        <span class="temple-shadow left"></span>
+                        <span class="temple-shadow right"></span>
                         <span class="jaw-shadow"></span>
+                        <span class="jawline"></span>
+                        <span class="chin-line"></span>
+                        <span class="chin-highlight"></span>
+                        <span class="sideburn left"></span>
+                        <span class="sideburn right"></span>
                         <span class="brow left"></span>
                         <span class="brow right"></span>
+                        <span class="eyelid left"></span>
+                        <span class="eyelid right"></span>
                         <span class="eye left"></span>
                         <span class="eye right"></span>
                         <span class="iris left"></span>
                         <span class="iris right"></span>
+                        <span class="nose-bridge"></span>
                         <span class="nose"></span>
+                        <span class="nostril left"></span>
+                        <span class="nostril right"></span>
+                        <span class="philtrum"></span>
                         <span class="cheek left"></span>
                         <span class="cheek right"></span>
+                        <span class="upper-lip"></span>
+                        <span class="lower-lip"></span>
                         <span class="mouth"></span>
+                        <span class="hair-strand right"></span>
                         <span class="cap"></span>
                         <span class="mustache"></span>
                         <span class="headset"></span>
