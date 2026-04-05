@@ -88,7 +88,10 @@ function renderBoard() {
 
             const piece = board[row][col];
             if (piece) {
-                cell.textContent = PIECES[piece];
+                const pieceElement = document.createElement('span');
+                pieceElement.className = 'piece ' + (piece[0] === 'w' ? 'piece-white' : 'piece-black');
+                pieceElement.textContent = PIECES[piece];
+                cell.appendChild(pieceElement);
             }
 
             cell.onclick = () => handleCellClick(row, col);
