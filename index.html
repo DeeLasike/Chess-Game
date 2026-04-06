@@ -95,29 +95,29 @@
             width: 100%;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 10px;
             align-items: start;
         }
         #bot-portrait-card {
-            min-height: 214px;
-            padding: 14px 12px 16px;
-            border-radius: 22px;
-            background: linear-gradient(180deg, rgba(255, 248, 233, 0.16) 0%, rgba(76, 53, 38, 0.22) 100%);
-            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 237, 211, 0.12);
+            min-height: 0;
+            padding: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: flex-start;
-            text-align: center;
+            text-align: left;
             cursor: default;
             transform: none;
         }
         #bot-portrait-card:hover {
             transform: none;
-            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 237, 211, 0.12);
+            box-shadow: none;
         }
         #bot-portrait-shell {
-            min-height: 126px;
+            min-height: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -125,9 +125,6 @@
         #bot-portrait-shell .bot-avatar {
             margin: 0;
             transform: scale(1.02);
-        }
-        .commentator-meta {
-            margin-top: 10px;
         }
         #trash-talk {
             padding: 14px 16px;
@@ -157,16 +154,10 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: #f2c47b;
-        }
-        #trash-talk-note {
-            display: block;
-            margin-top: 4px;
-            font-size: 13px;
-            letter-spacing: 0.03em;
-            color: rgba(255, 239, 214, 0.72);
+            margin-bottom: 8px;
         }
         #trash-talk-message {
-            margin: 10px 0 0;
+            margin: 0;
             font-size: 20px;
             line-height: 1.45;
             color: #fff6ea;
@@ -1235,14 +1226,8 @@
                 width: min(760px, calc(100vw - 32px));
             }
             #bot-portrait-card {
-                min-height: 0;
                 flex-direction: row;
-                justify-content: center;
-                gap: 14px;
-                text-align: left;
-            }
-            .commentator-meta {
-                margin-top: 0;
+                justify-content: flex-start;
             }
             #trash-talk::before {
                 left: 34px;
@@ -1271,9 +1256,6 @@
             #bot-commentary {
                 width: min(100vw - 16px, 760px);
                 gap: 12px;
-            }
-            #bot-portrait-card {
-                padding: 12px;
             }
             #bot-portrait-shell .bot-avatar {
                 transform: scale(0.84);
@@ -1667,12 +1649,9 @@
         <div id="bot-commentary">
             <div id="bot-portrait-card" class="bot-btn bot-easy tone-light char-milo">
                 <div id="bot-portrait-shell"></div>
-                <div class="commentator-meta">
-                    <span id="trash-talk-name">Bot Booth</span>
-                    <span id="trash-talk-note">Select a challenger</span>
-                </div>
             </div>
             <div id="trash-talk" aria-live="polite">
+                <span id="trash-talk-name">Bot Booth</span>
                 <p id="trash-talk-message">Pick a bot and it will start talking.</p>
             </div>
         </div>

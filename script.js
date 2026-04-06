@@ -380,7 +380,6 @@ let turn = 'w';
 let aiLevel = 'easy';
 let gameOver = false;
 let currentBotName = null;
-let currentBotNote = 'Select a challenger';
 let currentBotClasses = ['bot-btn', 'bot-easy', 'tone-light', 'char-milo'];
 
 const statusDiv = document.getElementById('status');
@@ -392,14 +391,12 @@ const chessboard = document.getElementById('chessboard');
 const botPortraitCard = document.getElementById('bot-portrait-card');
 const botPortraitShell = document.getElementById('bot-portrait-shell');
 const trashTalkName = document.getElementById('trash-talk-name');
-const trashTalkNote = document.getElementById('trash-talk-note');
 const trashTalkMessage = document.getElementById('trash-talk-message');
 
 document.querySelectorAll('.bot-btn').forEach((btn) => {
     btn.onclick = () => {
         aiLevel = btn.getAttribute('data-diff');
         currentBotName = btn.querySelector('.bot-name')?.textContent?.trim() || null;
-        currentBotNote = btn.querySelector('.bot-note')?.textContent?.trim() || getPersona().note;
         currentBotClasses = btn.className.split(/\s+/).filter(Boolean);
         syncBotCommentaryCard(btn.querySelector('.bot-avatar'));
         resetGame(false);
@@ -426,7 +423,7 @@ function resetGame(showMenu = false) {
     statusDiv.textContent = 'Your move (White)';
     if (showMenu) {
         menu.style.display = 'flex';
-        setTrashTalk('Pick a bot and it will start talking.', 'Bot Booth', 'Select a challenger');
+        setTrashTalk('Pick a bot and it will start talking.', 'Bot Booth');
     } else {
         setTrashTalk(pickPersonaLine(getPersona().intro));
     }
@@ -633,9 +630,8 @@ function getPersona() {
     return BOT_PERSONAS[currentBotName] || DEFAULT_PERSONA;
 }
 
-function setTrashTalk(message, speaker = currentBotName || 'Black AI', note = currentBotNote || getPersona().note) {
+function setTrashTalk(message, speaker = currentBotName || 'Black AI') {
     trashTalkName.textContent = speaker;
-    trashTalkNote.textContent = note;
     trashTalkMessage.textContent = message;
 }
 
