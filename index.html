@@ -33,6 +33,13 @@
             flex-direction: column;
             align-items: center;
         }
+        #board-hud {
+            width: min(100%, 604px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
         #chessboard {
             display: grid;
             grid-template-columns: repeat(8, 72px);
@@ -113,6 +120,27 @@
             font-size: 20px;
             background: rgba(255, 248, 233, 0.12);
             box-shadow: inset 0 0 0 1px rgba(255, 245, 228, 0.14);
+        }
+        #sound-toggle {
+            border: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255, 248, 233, 0.16);
+            color: #fff3de;
+            font: inherit;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            box-shadow: inset 0 0 0 1px rgba(255, 245, 228, 0.14);
+            transition: background 120ms ease, transform 120ms ease;
+        }
+        #sound-toggle:hover {
+            background: rgba(255, 248, 233, 0.24);
+            transform: translateY(-1px);
+        }
+        #sound-toggle.muted {
+            background: rgba(99, 73, 60, 0.26);
+            color: rgba(255, 243, 222, 0.74);
         }
         #bot-commentary {
             width: 100%;
@@ -1245,6 +1273,9 @@
             #game-shell {
                 grid-template-columns: 1fr;
             }
+            #board-hud {
+                width: min(100%, 604px);
+            }
             .bot-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -1271,6 +1302,11 @@
             #chessboard {
                 grid-template-columns: repeat(8, 42px);
                 grid-template-rows: repeat(8, 42px);
+            }
+            #board-hud {
+                width: min(100%, 364px);
+                flex-direction: column;
+                align-items: stretch;
             }
             .cell {
                 width: 42px;
@@ -1677,7 +1713,10 @@
     </div>
     <div id="game-shell">
         <div id="board-column">
-            <div id="status">Your move (White)</div>
+            <div id="board-hud">
+                <div id="status">Your move (White)</div>
+                <button id="sound-toggle" type="button" aria-pressed="true">Sound: On</button>
+            </div>
             <div id="chessboard"></div>
         </div>
         <div id="bot-commentary">

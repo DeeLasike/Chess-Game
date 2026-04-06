@@ -366,6 +366,19 @@ const DEFAULT_PERSONA = {
 const AI_MOVE_DELAY_MS = 1000;
 const MOVE_ANIMATION_MS = 220;
 
+const AUDIO = {
+    enabled: true,
+    context: null,
+    musicTimerId: null,
+    musicStep: 0,
+    musicPattern: [
+        { bass: 38, drone: 50, chord: [57, 60, 62], melody: [65, 64, 67] },
+        { bass: 37, drone: 49, chord: [56, 59, 61], melody: [64, 61, 66] },
+        { bass: 34, drone: 46, chord: [53, 57, 58], melody: [62, 60, 65] },
+        { bass: 36, drone: 48, chord: [55, 58, 60], melody: [63, 60, 64] }
+    ]
+};
+
 const STARTING_BOARD = [
     ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
     ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -392,6 +405,7 @@ const gameOverDiv = document.getElementById('gameover-title');
 const gameOverHeading = document.getElementById('gameover-heading');
 const gameOverMsg = document.getElementById('gameover-msg');
 const chessboard = document.getElementById('chessboard');
+const soundToggle = document.getElementById('sound-toggle');
 const botPortraitCard = document.getElementById('bot-portrait-card');
 const botPortraitShell = document.getElementById('bot-portrait-shell');
 const trashTalkName = document.getElementById('trash-talk-name');
@@ -399,6 +413,8 @@ const trashTalkMessage = document.getElementById('trash-talk-message');
 
 document.querySelectorAll('.bot-btn').forEach((btn) => {
     btn.onclick = () => {
+        primeAudio();
+        startBackgroundMusic();
         aiLevel = btn.getAttribute('data-diff');
         currentBotName = btn.querySelector('.bot-name')?.textContent?.trim() || null;
         currentBotClasses = btn.className.split(/\s+/).filter((className) => className && className !== 'bot-btn');
@@ -409,7 +425,26 @@ document.querySelectorAll('.bot-btn').forEach((btn) => {
 });
 
 document.getElementById('restart-btn').onclick = () => {
+    primeAudio();
+    startBackgroundMusic();
+    playSoundEffect('restart');
     resetGame(false);
+};
+
+soundToggle.onclick = () => {
+    AUDIO.enabled = !AUDIO.enabled;
+    updateSoundToggle();
+
+    if (AUDIO.enabled) {
+        primeAudio();
+        startBackgroundMusic();
+        playSoundEffect('restart');
+    } else {
+        stopBackgroundMusic();
+        if (AUDIO.context && AUDIO.context.state === 'running') {
+            AUDIO.context.suspend();
+        }
+    }
 };
 
 function cloneBoard(sourceBoard) {
@@ -474,6 +509,9 @@ function handleCellClick(row, col) {
         return;
     }
 
+    primeAudio();
+    startBackgroundMusic();
+
     const piece = board[row][col];
 
     if (!selected) {
@@ -505,6 +543,7 @@ function handleCellClick(row, col) {
     animateMoveOnBoard(move, () => {
         board = nextBoard;
         renderBoard();
+        playMoveSound(move, 'b');
 
         if (resolveGameState('b')) {
             return;
@@ -532,6 +571,7 @@ function aiMove() {
     animateMoveOnBoard(move, () => {
         board = nextBoard;
         renderBoard();
+        playMoveSound(move, 'w');
 
         const playerInCheck = isKingInCheck('w', board);
         const playerMoves = getAllLegalMoves('w', board);
@@ -652,12 +692,14 @@ function resolveGameState(colorToMove) {
 
     if (legalMoves.length === 0 && inCheck) {
         const winner = colorToMove === 'w' ? 'Black' : 'White';
+        playSoundEffect(winner === 'Black' ? 'win' : 'lose');
         showOverlay('CHECKMATE', winner + ' wins');
         setTrashTalk(pickPersonaLine(winner === 'Black' ? getPersona().win : getPersona().lose));
         return true;
     }
 
     if (legalMoves.length === 0) {
+        playSoundEffect('draw');
         showOverlay('STALEMATE', 'Draw');
         setTrashTalk(pickPersonaLine(getPersona().stalemate));
         return true;
@@ -731,6 +773,223 @@ function syncBotCommentaryCard(avatarElement) {
 
 function describePiece(piece) {
     return PIECE_NAMES[piece[1]] || 'piece';
+}
+
+function updateSoundToggle() {
+    soundToggle.textContent = AUDIO.enabled ? 'Sound: On' : 'Sound: Off';
+    soundToggle.classList.toggle('muted', !AUDIO.enabled);
+    soundToggle.setAttribute('aria-pressed', AUDIO.enabled ? 'true' : 'false');
+}
+
+function primeAudio() {
+    if (!AUDIO.enabled) {
+        return null;
+    }
+
+    if (!AUDIO.context) {
+        AUDIO.context = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (AUDIO.context.state === 'suspended') {
+        AUDIO.context.resume();
+    }
+
+    return AUDIO.context;
+}
+
+function startBackgroundMusic() {
+    const context = AUDIO.context || primeAudio();
+    if (!context || AUDIO.musicTimerId) {
+        return;
+    }
+
+    const playStep = () => {
+        if (!AUDIO.enabled || !AUDIO.context || AUDIO.context.state !== 'running') {
+            return;
+        }
+
+        const step = AUDIO.musicPattern[AUDIO.musicStep % AUDIO.musicPattern.length];
+        const now = AUDIO.context.currentTime;
+        playHumNote(step.bass, 1.28, 0.07, now, 0.1, 0.3, 520, 4);
+        playHumNote(step.drone, 1.32, 0.04, now + 0.04, 0.14, 0.34, 460, 3);
+        playHumNote(step.chord[0], 0.92, 0.036, now + 0.18, 0.08, 0.22, 900, 6);
+        playHumNote(step.chord[1], 0.92, 0.03, now + 0.28, 0.08, 0.22, 860, 6);
+        playHumNote(step.chord[2], 0.92, 0.024, now + 0.38, 0.08, 0.22, 820, 6);
+        playHumNote(step.melody[0], 0.34, 0.03, now + 0.56, 0.03, 0.1, 1200, 7);
+        playHumNote(step.melody[1], 0.34, 0.027, now + 0.92, 0.03, 0.1, 1200, 7);
+        playHumNote(step.melody[2], 0.38, 0.032, now + 1.22, 0.03, 0.12, 1250, 8);
+        AUDIO.musicStep += 1;
+    };
+
+    playStep();
+    AUDIO.musicTimerId = window.setInterval(playStep, 1500);
+}
+
+function stopBackgroundMusic() {
+    if (AUDIO.musicTimerId) {
+        window.clearInterval(AUDIO.musicTimerId);
+        AUDIO.musicTimerId = null;
+    }
+}
+
+function playMoveSound(move, defendingColor) {
+    playSoundEffect('move');
+}
+
+function playSoundEffect(type) {
+    const context = primeAudio();
+    if (!context) {
+        return;
+    }
+
+    const now = context.currentTime;
+
+    if (type === 'move') {
+        playWoodTap(now);
+        return;
+    }
+
+    if (type === 'capture') {
+        playSynthNote(57, 0.12, 'square', 0.032, now, 0.002, 0.05);
+        playSynthNote(50, 0.18, 'triangle', 0.026, now + 0.05, 0.002, 0.08);
+        return;
+    }
+
+    if (type === 'check') {
+        playSynthNote(82, 0.12, 'sawtooth', 0.03, now, 0.002, 0.06);
+        playSynthNote(89, 0.16, 'sawtooth', 0.025, now + 0.07, 0.002, 0.08);
+        return;
+    }
+
+    if (type === 'win') {
+        playSynthNote(72, 0.22, 'triangle', 0.03, now, 0.005, 0.12);
+        playSynthNote(79, 0.26, 'triangle', 0.028, now + 0.16, 0.005, 0.14);
+        playSynthNote(84, 0.34, 'triangle', 0.03, now + 0.34, 0.005, 0.18);
+        return;
+    }
+
+    if (type === 'lose') {
+        playSynthNote(64, 0.2, 'sine', 0.03, now, 0.005, 0.12);
+        playSynthNote(59, 0.24, 'sine', 0.026, now + 0.16, 0.005, 0.14);
+        playSynthNote(52, 0.34, 'sine', 0.03, now + 0.34, 0.005, 0.18);
+        return;
+    }
+
+    if (type === 'draw') {
+        playSynthNote(67, 0.18, 'triangle', 0.026, now, 0.005, 0.1);
+        playSynthNote(62, 0.24, 'triangle', 0.022, now + 0.16, 0.005, 0.12);
+        return;
+    }
+
+    if (type === 'restart') {
+        playSynthNote(74, 0.08, 'sine', 0.02, now, 0.003, 0.05);
+        playSynthNote(79, 0.12, 'sine', 0.018, now + 0.06, 0.003, 0.06);
+    }
+}
+
+function playSynthNote(midiNote, duration, waveType, volume, startTime, attack, release) {
+    if (!AUDIO.context) {
+        return;
+    }
+
+    const oscillator = AUDIO.context.createOscillator();
+    const gainNode = AUDIO.context.createGain();
+    const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+    const endTime = startTime + duration;
+
+    oscillator.type = waveType;
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    gainNode.gain.setValueAtTime(0.0001, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(volume, startTime + attack);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, endTime + release);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(AUDIO.context.destination);
+    oscillator.start(startTime);
+    oscillator.stop(endTime + release + 0.02);
+}
+
+function playHumNote(midiNote, duration, volume, startTime, attack, release, cutoff, detuneCents) {
+    if (!AUDIO.context) {
+        return;
+    }
+
+    const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+    const endTime = startTime + duration;
+    const gainNode = AUDIO.context.createGain();
+    const filter = AUDIO.context.createBiquadFilter();
+    const primaryOsc = AUDIO.context.createOscillator();
+    const secondaryOsc = AUDIO.context.createOscillator();
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(cutoff, startTime);
+    filter.Q.setValueAtTime(1.2, startTime);
+
+    primaryOsc.type = 'sine';
+    primaryOsc.frequency.setValueAtTime(frequency, startTime);
+    primaryOsc.detune.setValueAtTime(-detuneCents, startTime);
+
+    secondaryOsc.type = 'triangle';
+    secondaryOsc.frequency.setValueAtTime(frequency, startTime);
+    secondaryOsc.detune.setValueAtTime(detuneCents, startTime);
+
+    gainNode.gain.setValueAtTime(0.0001, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(volume, startTime + attack);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, endTime + release);
+
+    primaryOsc.connect(filter);
+    secondaryOsc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(AUDIO.context.destination);
+
+    primaryOsc.start(startTime);
+    secondaryOsc.start(startTime);
+    primaryOsc.stop(endTime + release + 0.04);
+    secondaryOsc.stop(endTime + release + 0.04);
+}
+
+function playWoodTap(startTime) {
+    if (!AUDIO.context) {
+        return;
+    }
+
+    playSynthNote(34, 0.07, 'triangle', 0.085, startTime, 0.001, 0.065);
+    playSynthNote(41, 0.05, 'triangle', 0.04, startTime + 0.01, 0.001, 0.04);
+    playSynthNote(50, 0.035, 'sine', 0.018, startTime + 0.012, 0.001, 0.025);
+    playFilteredNoiseBurst(startTime + 0.004, 0.03, 1200, 0.024);
+}
+
+function playFilteredNoiseBurst(startTime, duration, cutoff, volume) {
+    if (!AUDIO.context) {
+        return;
+    }
+
+    const sampleRate = AUDIO.context.sampleRate;
+    const frameCount = Math.max(1, Math.floor(sampleRate * duration));
+    const buffer = AUDIO.context.createBuffer(1, frameCount, sampleRate);
+    const data = buffer.getChannelData(0);
+
+    for (let index = 0; index < frameCount; index += 1) {
+        const decay = 1 - index / frameCount;
+        data[index] = (Math.random() * 2 - 1) * decay;
+    }
+
+    const source = AUDIO.context.createBufferSource();
+    const filter = AUDIO.context.createBiquadFilter();
+    const gainNode = AUDIO.context.createGain();
+
+    source.buffer = buffer;
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(cutoff, startTime);
+    gainNode.gain.setValueAtTime(0.0001, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(volume, startTime + 0.002);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+    source.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(AUDIO.context.destination);
+    source.start(startTime);
+    source.stop(startTime + duration + 0.01);
 }
 
 function getAllLegalMoves(color, sourceBoard) {
@@ -1016,3 +1275,4 @@ function isInside(row, col) {
 }
 
 resetGame(true);
+updateSoundToggle();
