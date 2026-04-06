@@ -24,7 +24,9 @@ const state = {
     gameOver: false,
     currentBotName: null,
     currentBotClasses: ['bot-easy', 'tone-light', 'char-milo'],
-    isAnimatingMove: false
+    isAnimatingMove: false,
+    history: [],
+    pendingAiTimeout: null
 };
 
 const audio = createAudioController();
@@ -37,6 +39,7 @@ const refs = {
     gameOverMessage: document.getElementById('gameover-msg'),
     restartButton: document.getElementById('restart-btn'),
     chessboard: document.getElementById('chessboard'),
+    undoButton: document.getElementById('undo-btn'),
     soundToggle: document.getElementById('sound-toggle'),
     botPortraitCard: document.getElementById('bot-portrait-card'),
     botPortraitShell: document.getElementById('bot-portrait-shell'),
@@ -64,6 +67,10 @@ refs.restartButton.onclick = () => {
     resetGame(false);
 };
 
+refs.undoButton.onclick = () => {
+    undoMove();
+};
+
 refs.soundToggle.onclick = () => {
     const enabled = audio.toggleEnabled();
     updateSoundToggle(enabled);
@@ -76,6 +83,7 @@ refs.soundToggle.onclick = () => {
 };
 
 function resetGame(showMenu = false) {
+    clearPendingAiMove();
     state.board = cloneBoard(STARTING_BOARD);
     state.selected = null;
     state.turn = 'w';
@@ -93,6 +101,8 @@ function resetGame(showMenu = false) {
     }
 
     renderBoard();
+    state.history = [createHistoryEntry(null)];
+    updateUndoButton();
 }
 
 function renderBoard() {
@@ -171,16 +181,18 @@ function handleCellClick(row, col) {
     state.selected = null;
     animateMoveOnBoard(move, () => {
         state.board = nextBoard;
+        state.turn = 'b';
         renderBoard();
         audio.playMoveSound();
 
         if (resolveGameState('b')) {
+            recordHistory(move);
             return;
         }
 
-        state.turn = 'b';
         refs.status.textContent = "AI's move (Black)";
-        setTimeout(aiMove, AI_MOVE_DELAY_MS);
+        recordHistory(move);
+        scheduleAiMove();
     });
 }
 
@@ -200,6 +212,7 @@ function aiMove() {
 
     animateMoveOnBoard(move, () => {
         state.board = nextBoard;
+        state.turn = 'w';
         renderBoard();
         audio.playMoveSound();
 
@@ -207,13 +220,41 @@ function aiMove() {
         const playerMoves = getAllLegalMoves('w', state.board);
 
         if (resolveGameState('w')) {
+            recordHistory(move);
             return;
         }
 
-        state.turn = 'w';
         refs.status.textContent = buildTurnStatus('w');
         setTrashTalk(buildAiTrashTalk(move, playerInCheck, playerMoves.length));
+        recordHistory(move);
     });
+}
+
+function undoMove() {
+    if (refs.menu.style.display !== 'none' || state.isAnimatingMove || state.history.length <= 1) {
+        return;
+    }
+
+    clearPendingAiMove();
+    state.selected = null;
+    const lastEntry = state.history[state.history.length - 1];
+    const previousEntry = state.history[state.history.length - 2];
+
+    if (!lastEntry || !previousEntry) {
+        return;
+    }
+
+    const finalizeUndo = () => {
+        state.history.pop();
+        restoreSnapshot(previousEntry.snapshot);
+    };
+
+    if (!lastEntry.move) {
+        finalizeUndo();
+        return;
+    }
+
+    animateUndoMove(lastEntry.move, finalizeUndo);
 }
 
 function resolveGameState(colorToMove) {
@@ -311,9 +352,77 @@ function updateSoundToggle(enabled = audio.isEnabled()) {
     refs.soundToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
 }
 
+function updateUndoButton() {
+    refs.undoButton.disabled = refs.menu.style.display !== 'none' || state.history.length <= 1 || state.isAnimatingMove;
+}
+
+function createSnapshot() {
+    return {
+        board: cloneBoard(state.board),
+        turn: state.turn,
+        gameOver: state.gameOver,
+        statusText: refs.status.textContent,
+        trashTalkName: refs.trashTalkName.textContent,
+        trashTalkMessage: refs.trashTalkMessage.textContent,
+        gameOverHeading: refs.gameOverHeading.textContent,
+        gameOverMessage: refs.gameOverMessage.textContent,
+        gameOverDisplay: refs.gameOver.style.display
+    };
+}
+
+function createHistoryEntry(move) {
+    return {
+        move: move ? { ...move } : null,
+        snapshot: createSnapshot()
+    };
+}
+
+function recordHistory(move) {
+    state.history.push(createHistoryEntry(move));
+    updateUndoButton();
+}
+
+function restoreSnapshot(snapshot) {
+    state.board = cloneBoard(snapshot.board);
+    state.selected = null;
+    state.turn = snapshot.turn;
+    state.gameOver = snapshot.gameOver;
+    refs.status.textContent = snapshot.statusText;
+    refs.trashTalkName.textContent = snapshot.trashTalkName;
+    refs.trashTalkMessage.textContent = snapshot.trashTalkMessage;
+    refs.gameOverHeading.textContent = snapshot.gameOverHeading;
+    refs.gameOverMessage.textContent = snapshot.gameOverMessage;
+    refs.gameOver.style.display = snapshot.gameOverDisplay;
+    renderBoard();
+    updateUndoButton();
+}
+
+function scheduleAiMove() {
+    clearPendingAiMove();
+    state.pendingAiTimeout = window.setTimeout(() => {
+        state.pendingAiTimeout = null;
+        aiMove();
+    }, AI_MOVE_DELAY_MS);
+}
+
+function clearPendingAiMove() {
+    if (state.pendingAiTimeout !== null) {
+        window.clearTimeout(state.pendingAiTimeout);
+        state.pendingAiTimeout = null;
+    }
+}
+
 function animateMoveOnBoard(move, onComplete) {
-    const fromCell = getCellElement(move.fromR, move.fromC);
-    const toCell = getCellElement(move.toR, move.toC);
+    animateBoardTransition(move.fromR, move.fromC, move.toR, move.toC, onComplete);
+}
+
+function animateUndoMove(move, onComplete) {
+    animateBoardTransition(move.toR, move.toC, move.fromR, move.fromC, onComplete);
+}
+
+function animateBoardTransition(fromRow, fromCol, toRow, toCol, onComplete) {
+    const fromCell = getCellElement(fromRow, fromCol);
+    const toCell = getCellElement(toRow, toCol);
     const pieceElement = fromCell?.querySelector('.piece');
 
     if (!fromCell || !toCell || !pieceElement) {
@@ -322,6 +431,7 @@ function animateMoveOnBoard(move, onComplete) {
     }
 
     state.isAnimatingMove = true;
+    updateUndoButton();
 
     const fromRect = pieceElement.getBoundingClientRect();
     const toRect = toCell.getBoundingClientRect();
@@ -344,6 +454,7 @@ function animateMoveOnBoard(move, onComplete) {
     window.setTimeout(() => {
         movingPiece.remove();
         state.isAnimatingMove = false;
+        updateUndoButton();
         onComplete();
     }, MOVE_ANIMATION_MS);
 }
