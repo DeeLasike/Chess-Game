@@ -363,6 +363,8 @@ const DEFAULT_PERSONA = {
     ]
 };
 
+const AI_MOVE_DELAY_MS = 1000;
+
 const STARTING_BOARD = [
     ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
     ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -504,7 +506,7 @@ function handleCellClick(row, col) {
 
     turn = 'b';
     statusDiv.textContent = "AI's move (Black)";
-    setTimeout(aiMove, 250);
+    setTimeout(aiMove, AI_MOVE_DELAY_MS);
 }
 
 function aiMove() {
