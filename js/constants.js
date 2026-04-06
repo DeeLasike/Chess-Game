@@ -21,7 +21,7 @@ export const PIECE_NAMES = {
     P: 'pawn'
 };
 
-export const AI_MOVE_DELAY_MS = 1000;
+export const AI_MOVE_DELAY_MS = 1800;
 export const MOVE_ANIMATION_MS = 220;
 export const CUSTOM_MUSIC_PATH = 'assets/music/Clockwork Curiosity.mp3';
 

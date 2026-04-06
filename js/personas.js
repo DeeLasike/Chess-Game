@@ -5,6 +5,18 @@ export const BOT_PERSONAS = {
             'Milo Spark online. I brought a chessboard and bad news for your pieces.',
             'Milo Spark here. Let us keep this friendly while I ruin your center.'
         ],
+        react: [
+            'You moved your {piece}. Brave little idea.',
+            'That {piece} move looked confident. I would not get attached to it.'
+        ],
+        reactCheck: [
+            'Okay, check. That was rude and mildly competent.',
+            'You checked me with a {piece}. I noticed, unfortunately.'
+        ],
+        panic: [
+            'Hey, my {captured}. I was still using that.',
+            'You took my {captured}. This has become personally annoying.'
+        ],
         quiet: [
             'Tiny move, huge inconvenience. Your turn.',
             'I barely touched the board and your position still got worse.',
@@ -42,6 +54,18 @@ export const BOT_PERSONAS = {
         intro: [
             'Poppy Flux reporting in. I brought jokes, forks, and zero sympathy.',
             'Poppy Flux is here. Smile now before the tactics start.'
+        ],
+        react: [
+            'Ooh, a {piece} move. You are feeling something.',
+            'That {piece} just stepped up like it had a plan.'
+        ],
+        reactCheck: [
+            'Check on me? Okay, drama queen.',
+            'You checked me with a {piece}. Cute. Stressful, but cute.'
+        ],
+        panic: [
+            'Wait, my {captured}? Give that back.',
+            'You took my {captured}. I am entering hater mode.'
         ],
         quiet: [
             'That move was cute. It will age terribly.',
@@ -81,6 +105,18 @@ export const BOT_PERSONAS = {
             'Nova Byte loaded. I already have notes about your opening.',
             'Nova Byte online. Let us test the structural integrity of your ideas.'
         ],
+        react: [
+            'Your {piece} move has been logged and judged.',
+            'Interesting. That {piece} move does alter the file a bit.'
+        ],
+        reactCheck: [
+            'Check received. Your {piece} has my attention.',
+            'You checked me. Fine. The position just got less theoretical.'
+        ],
+        panic: [
+            'My {captured} just got deleted. I object to the procedure.',
+            'You took my {captured}. Audit interrupted.'
+        ],
         quiet: [
             'Position tightened. I hope you enjoy small disasters.',
             'Every square is getting heavier for you.',
@@ -118,6 +154,18 @@ export const BOT_PERSONAS = {
         intro: [
             'Kira Vector here. I am about to make your good ideas look temporary.',
             'Kira Vector online. Let us see how your confidence handles pressure.'
+        ],
+        react: [
+            'That {piece} move asks a real question. I dislike that.',
+            'You pushed the {piece}. Fine. Pressure acknowledged.'
+        ],
+        reactCheck: [
+            'Check. All right, you got through for a second.',
+            'Your {piece} delivered check. I am already planning the reply.'
+        ],
+        panic: [
+            'My {captured} is gone. That was not in the preferred line.',
+            'You took my {captured}. I am calm on the outside only.'
         ],
         quiet: [
             'Another square claimed. Your options are on a diet now.',
@@ -157,6 +205,18 @@ export const BOT_PERSONAS = {
             'Rex Meridian stepping in. Let us see how long your kingside lasts.',
             'Rex Meridian here. I hope you stretched before defending this.'
         ],
+        react: [
+            'That {piece} move has teeth. I see it.',
+            'You moved the {piece} like you want a fight. Better.'
+        ],
+        reactCheck: [
+            'Check on me? Now it is personal.',
+            'Your {piece} found check. Good. Keep the game violent.'
+        ],
+        panic: [
+            'You took my {captured}. That is going to cost you.',
+            'My {captured} just dropped and I am suddenly much less polite.'
+        ],
         quiet: [
             'I improved my attack. You should try improving your situation.',
             'That move sharpened my threats and your sweating.',
@@ -194,6 +254,18 @@ export const BOT_PERSONAS = {
         intro: [
             'Iris Quill online. I hope you enjoy elegant damage.',
             'Iris Quill here. Let us make your position collapse tastefully.'
+        ],
+        react: [
+            'That {piece} move was annoyingly tasteful.',
+            'You gave the {piece} a lovely square. I resent the composition.'
+        ],
+        reactCheck: [
+            'Check. How theatrical of you.',
+            'Your {piece} delivered check with entirely too much style.'
+        ],
+        panic: [
+            'My {captured} is gone. The composition has suffered.',
+            'You removed my {captured}. I hate this edit.'
         ],
         quiet: [
             'That move had style. Your reply will need better taste.',
@@ -233,6 +305,18 @@ export const BOT_PERSONAS = {
             'Zara Hex has entered the board. I do not miss much.',
             'Zara Hex online. Let us skip the hope phase.'
         ],
+        react: [
+            'That {piece} move changes things. Slightly.',
+            'You moved the {piece}. I will account for it.'
+        ],
+        reactCheck: [
+            'Check noted. Do not mistake that for safety.',
+            'Your {piece} found check. Enjoy the moment.'
+        ],
+        panic: [
+            'You took my {captured}. Annoying, but not decisive.',
+            'My {captured} is gone. You bought yourself attention.'
+        ],
         quiet: [
             'Your position just lost another layer of safety.',
             'I am not rushing. That is part of the problem for you.',
@@ -270,6 +354,18 @@ export const BOT_PERSONAS = {
         intro: [
             'Onyx Vale active. I am already pricing out your mistakes.',
             'Onyx Vale online. Keep moving pieces, I will keep collecting them.'
+        ],
+        react: [
+            'Your {piece} move has been evaluated. I did not enjoy the score.',
+            'You moved the {piece}. Efficient enough to be irritating.'
+        ],
+        reactCheck: [
+            'Check accepted. Your {piece} will be remembered for this.',
+            'You checked me. The paperwork just got unpleasant.'
+        ],
+        panic: [
+            'My {captured} just vanished. That is materially offensive.',
+            'You took my {captured}. I am revising your survival odds.'
         ],
         quiet: [
             'One move closer. You can hear the board creaking now.',
@@ -309,6 +405,18 @@ export const DEFAULT_PERSONA = {
     note: 'Selected challenger',
     intro: [
         'Black is ready. Try not to blunder into something memorable.'
+    ],
+    react: [
+        'You moved your {piece}. I saw it.',
+        'That {piece} move is now my problem.'
+    ],
+    reactCheck: [
+        'Check. That is inconvenient.',
+        'Your {piece} found check. Fine.'
+    ],
+    panic: [
+        'My {captured} just fell. Rude.',
+        'You took my {captured}. I object.'
     ],
     quiet: [
         'Your move. Try to improve something.',

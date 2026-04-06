@@ -184,6 +184,7 @@ function handleCellClick(row, col) {
         state.turn = 'b';
         renderBoard();
         audio.playMoveSound();
+        const aiInCheck = isKingInCheck('b', state.board);
 
         if (resolveGameState('b')) {
             recordHistory(move);
@@ -191,6 +192,7 @@ function handleCellClick(row, col) {
         }
 
         refs.status.textContent = "AI's move (Black)";
+        setTrashTalk(buildPlayerMoveTrashTalk(move, aiInCheck));
         recordHistory(move);
         scheduleAiMove();
     });
@@ -319,8 +321,24 @@ function buildAiTrashTalk(move, playerInCheck, playerMoveCount) {
     return pickPersonaLine(persona.quiet);
 }
 
+function buildPlayerMoveTrashTalk(move, aiInCheck) {
+    const persona = getPersona();
+
+    if (move.captured) {
+        return fillTrashTalkTemplate(pickPersonaLine(persona.panic), move);
+    }
+
+    if (aiInCheck) {
+        return fillTrashTalkTemplate(pickPersonaLine(persona.reactCheck), move);
+    }
+
+    return fillTrashTalkTemplate(pickPersonaLine(persona.react), move);
+}
+
 function fillTrashTalkTemplate(template, move) {
-    return template.replace('{captured}', move.captured ? describePiece(move.captured) : 'piece');
+    return template
+        .replace('{captured}', move.captured ? describePiece(move.captured) : 'piece')
+        .replace('{piece}', move.piece ? describePiece(move.piece) : 'piece');
 }
 
 function pickPersonaLine(entry) {
