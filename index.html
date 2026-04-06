@@ -56,6 +56,22 @@
         .cell:hover {
             filter: brightness(1.05);
         }
+        .cell.legal-target::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(44, 149, 255, 0.72);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
+            pointer-events: none;
+        }
+        .cell.capture-target::after {
+            width: 24px;
+            height: 24px;
+            background: rgba(44, 149, 255, 0.4);
+            box-shadow: 0 0 0 4px rgba(44, 149, 255, 0.28);
+        }
         .white { background: linear-gradient(145deg, #f2dfbf 0%, #dbc19a 100%); }
         .black { background: linear-gradient(145deg, #8e6548 0%, #68462f 100%); }
         .selected { outline: 3px solid #4ec4ff; outline-offset: -3px; }
@@ -82,6 +98,13 @@
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 70%);
             pointer-events: none;
+        }
+        .moving-piece {
+            position: fixed;
+            z-index: 50;
+            pointer-events: none;
+            transition: transform 220ms ease-in-out;
+            will-change: transform;
         }
         #status {
             margin-top: 0;
@@ -1252,6 +1275,14 @@
             .cell {
                 width: 42px;
                 height: 42px;
+            }
+            .cell.legal-target::after {
+                width: 12px;
+                height: 12px;
+            }
+            .cell.capture-target::after {
+                width: 18px;
+                height: 18px;
             }
             .piece {
                 font-size: 28px;

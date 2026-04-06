@@ -364,6 +364,7 @@ const DEFAULT_PERSONA = {
 };
 
 const AI_MOVE_DELAY_MS = 1000;
+const MOVE_ANIMATION_MS = 220;
 
 const STARTING_BOARD = [
     ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
@@ -383,6 +384,7 @@ let aiLevel = 'easy';
 let gameOver = false;
 let currentBotName = null;
 let currentBotClasses = ['bot-easy', 'tone-light', 'char-milo'];
+let isAnimatingMove = false;
 
 const statusDiv = document.getElementById('status');
 const menu = document.getElementById('menu-overlay');
@@ -442,13 +444,15 @@ function renderBoard() {
             const isSelected = selected && selected[0] === row && selected[1] === col;
             const isLegalTarget = legalTargets.some((move) => move.toR === row && move.toC === col);
             cell.className = 'cell ' + ((row + col) % 2 === 0 ? 'white' : 'black');
+            cell.dataset.row = String(row);
+            cell.dataset.col = String(col);
 
             if (isSelected) {
                 cell.classList.add('selected');
             }
 
             if (isLegalTarget) {
-                cell.style.boxShadow = 'inset 0 0 0 4px rgba(33, 150, 243, 0.7)';
+                cell.classList.add(board[row][col] ? 'capture-target' : 'legal-target');
             }
 
             const piece = board[row][col];
@@ -466,7 +470,7 @@ function renderBoard() {
 }
 
 function handleCellClick(row, col) {
-    if (turn !== 'w' || menu.style.display !== 'none' || gameOver) {
+    if (turn !== 'w' || menu.style.display !== 'none' || gameOver || isAnimatingMove) {
         return;
     }
 
@@ -496,21 +500,24 @@ function handleCellClick(row, col) {
         return;
     }
 
-    board = applyMoveToBoard(board, move);
+    const nextBoard = applyMoveToBoard(board, move);
     selected = null;
-    renderBoard();
+    animateMoveOnBoard(move, () => {
+        board = nextBoard;
+        renderBoard();
 
-    if (resolveGameState('b')) {
-        return;
-    }
+        if (resolveGameState('b')) {
+            return;
+        }
 
-    turn = 'b';
-    statusDiv.textContent = "AI's move (Black)";
-    setTimeout(aiMove, AI_MOVE_DELAY_MS);
+        turn = 'b';
+        statusDiv.textContent = "AI's move (Black)";
+        setTimeout(aiMove, AI_MOVE_DELAY_MS);
+    });
 }
 
 function aiMove() {
-    if (gameOver) {
+    if (gameOver || isAnimatingMove) {
         return;
     }
 
@@ -521,19 +528,61 @@ function aiMove() {
     }
 
     const move = chooseAiMove(moves);
-    board = applyMoveToBoard(board, move);
-    renderBoard();
+    const nextBoard = applyMoveToBoard(board, move);
+    animateMoveOnBoard(move, () => {
+        board = nextBoard;
+        renderBoard();
 
-    const playerInCheck = isKingInCheck('w', board);
-    const playerMoves = getAllLegalMoves('w', board);
+        const playerInCheck = isKingInCheck('w', board);
+        const playerMoves = getAllLegalMoves('w', board);
 
-    if (resolveGameState('w')) {
+        if (resolveGameState('w')) {
+            return;
+        }
+
+        turn = 'w';
+        statusDiv.textContent = buildTurnStatus('w');
+        setTrashTalk(buildAiTrashTalk(move, playerInCheck, playerMoves.length));
+    });
+}
+
+function animateMoveOnBoard(move, onComplete) {
+    const fromCell = getCellElement(move.fromR, move.fromC);
+    const toCell = getCellElement(move.toR, move.toC);
+    const pieceElement = fromCell?.querySelector('.piece');
+
+    if (!fromCell || !toCell || !pieceElement) {
+        onComplete();
         return;
     }
 
-    turn = 'w';
-    statusDiv.textContent = buildTurnStatus('w');
-    setTrashTalk(buildAiTrashTalk(move, playerInCheck, playerMoves.length));
+    isAnimatingMove = true;
+
+    const fromRect = pieceElement.getBoundingClientRect();
+    const toRect = toCell.getBoundingClientRect();
+    const movingPiece = pieceElement.cloneNode(true);
+    movingPiece.classList.add('moving-piece');
+    movingPiece.style.left = `${fromRect.left}px`;
+    movingPiece.style.top = `${fromRect.top}px`;
+    movingPiece.style.width = `${fromRect.width}px`;
+    movingPiece.style.height = `${fromRect.height}px`;
+
+    pieceElement.style.opacity = '0';
+    document.body.appendChild(movingPiece);
+
+    requestAnimationFrame(() => {
+        movingPiece.style.transform = `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px)`;
+    });
+
+    window.setTimeout(() => {
+        movingPiece.remove();
+        isAnimatingMove = false;
+        onComplete();
+    }, MOVE_ANIMATION_MS);
+}
+
+function getCellElement(row, col) {
+    return chessboard.querySelector(`[data-row="${row}"][data-col="${col}"]`);
 }
 
 function chooseAiMove(moves) {
