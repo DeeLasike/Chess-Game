@@ -246,17 +246,32 @@ function undoMove() {
         return;
     }
 
-    const finalizeUndo = () => {
+    if (!lastEntry.move) {
         state.history.pop();
         restoreSnapshot(previousEntry.snapshot);
-    };
-
-    if (!lastEntry.move) {
-        finalizeUndo();
         return;
     }
 
-    animateUndoMove(lastEntry.move, finalizeUndo);
+    const shouldUndoFullRound = state.turn === 'w' && state.history.length > 2 && Boolean(previousEntry.move);
+
+    if (!shouldUndoFullRound) {
+        animateUndoMove(lastEntry.move, () => {
+            state.history.pop();
+            restoreSnapshot(previousEntry.snapshot);
+        });
+        return;
+    }
+
+    const roundStartEntry = state.history[state.history.length - 3];
+
+    animateUndoMove(lastEntry.move, () => {
+        state.history.pop();
+        restoreSnapshot(previousEntry.snapshot);
+        animateUndoMove(previousEntry.move, () => {
+            state.history.pop();
+            restoreSnapshot(roundStartEntry.snapshot);
+        });
+    });
 }
 
 function resolveGameState(colorToMove) {
