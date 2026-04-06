@@ -380,7 +380,7 @@ let turn = 'w';
 let aiLevel = 'easy';
 let gameOver = false;
 let currentBotName = null;
-let currentBotClasses = ['bot-btn', 'bot-easy', 'tone-light', 'char-milo'];
+let currentBotClasses = ['bot-easy', 'tone-light', 'char-milo'];
 
 const statusDiv = document.getElementById('status');
 const menu = document.getElementById('menu-overlay');
@@ -397,7 +397,7 @@ document.querySelectorAll('.bot-btn').forEach((btn) => {
     btn.onclick = () => {
         aiLevel = btn.getAttribute('data-diff');
         currentBotName = btn.querySelector('.bot-name')?.textContent?.trim() || null;
-        currentBotClasses = btn.className.split(/\s+/).filter(Boolean);
+        currentBotClasses = btn.className.split(/\s+/).filter((className) => className && className !== 'bot-btn');
         syncBotCommentaryCard(btn.querySelector('.bot-avatar'));
         resetGame(false);
         menu.style.display = 'none';
