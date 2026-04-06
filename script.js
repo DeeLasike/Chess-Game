@@ -560,6 +560,8 @@ function animateMoveOnBoard(move, onComplete) {
 
     const fromRect = pieceElement.getBoundingClientRect();
     const toRect = toCell.getBoundingClientRect();
+    const targetLeft = toRect.left + (toRect.width - fromRect.width) / 2;
+    const targetTop = toRect.top + (toRect.height - fromRect.height) / 2;
     const movingPiece = pieceElement.cloneNode(true);
     movingPiece.classList.add('moving-piece');
     movingPiece.style.left = `${fromRect.left}px`;
@@ -571,7 +573,7 @@ function animateMoveOnBoard(move, onComplete) {
     document.body.appendChild(movingPiece);
 
     requestAnimationFrame(() => {
-        movingPiece.style.transform = `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px)`;
+        movingPiece.style.transform = `translate(${targetLeft - fromRect.left}px, ${targetTop - fromRect.top}px)`;
     });
 
     window.setTimeout(() => {
