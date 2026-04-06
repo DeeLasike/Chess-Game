@@ -88,14 +88,14 @@ export function createAudioController() {
         }
 
         if (type === 'capture') {
-            playSynthNote(57, 0.12, 'square', 0.032, now, 0.002, 0.05);
-            playSynthNote(50, 0.18, 'triangle', 0.026, now + 0.05, 0.002, 0.08);
+            playWoodTap(now, 1.08);
+            playWoodTap(now + 0.02, 0.92);
             return;
         }
 
         if (type === 'check') {
-            playSynthNote(82, 0.12, 'sawtooth', 0.03, now, 0.002, 0.06);
-            playSynthNote(89, 0.16, 'sawtooth', 0.025, now + 0.07, 0.002, 0.08);
+            playWoodTap(now, 1.12);
+            playWoodTap(now + 0.05, 0.98);
             return;
         }
 
@@ -147,14 +147,14 @@ export function createAudioController() {
         oscillator.stop(endTime + release + 0.02);
     }
 
-    function playWoodTap(startTime) {
+    function playWoodTap(startTime, pitchScale = 1) {
         if (!state.context) {
             return;
         }
 
-        playSynthNote(34, 0.07, 'triangle', 0.085, startTime, 0.001, 0.065);
-        playSynthNote(41, 0.05, 'triangle', 0.04, startTime + 0.01, 0.001, 0.04);
-        playSynthNote(50, 0.035, 'sine', 0.018, startTime + 0.012, 0.001, 0.025);
+        playSynthNote(34 * pitchScale, 0.07, 'triangle', 0.085, startTime, 0.001, 0.065);
+        playSynthNote(41 * pitchScale, 0.05, 'triangle', 0.04, startTime + 0.01, 0.001, 0.04);
+        playSynthNote(50 * pitchScale, 0.035, 'sine', 0.018, startTime + 0.012, 0.001, 0.025);
         playFilteredNoiseBurst(startTime + 0.004, 0.03, 1200, 0.024);
     }
 
