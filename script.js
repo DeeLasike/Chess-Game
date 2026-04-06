@@ -365,18 +365,12 @@ const DEFAULT_PERSONA = {
 
 const AI_MOVE_DELAY_MS = 1000;
 const MOVE_ANIMATION_MS = 220;
+const CUSTOM_MUSIC_PATH = 'assets/music/Clockwork Curiosity.mp3';
 
 const AUDIO = {
     enabled: true,
     context: null,
-    musicTimerId: null,
-    musicStep: 0,
-    musicPattern: [
-        { bass: 38, drone: 50, chord: [57, 60, 62], melody: [65, 64, 67] },
-        { bass: 37, drone: 49, chord: [56, 59, 61], melody: [64, 61, 66] },
-        { bass: 34, drone: 46, chord: [53, 57, 58], melody: [62, 60, 65] },
-        { bass: 36, drone: 48, chord: [55, 58, 60], melody: [63, 60, 64] }
-    ]
+    musicElement: null
 };
 
 const STARTING_BOARD = [
@@ -798,37 +792,27 @@ function primeAudio() {
 }
 
 function startBackgroundMusic() {
-    const context = AUDIO.context || primeAudio();
-    if (!context || AUDIO.musicTimerId) {
+    if (!AUDIO.enabled) {
         return;
     }
 
-    const playStep = () => {
-        if (!AUDIO.enabled || !AUDIO.context || AUDIO.context.state !== 'running') {
-            return;
-        }
+    if (!AUDIO.musicElement) {
+        AUDIO.musicElement = new Audio(encodeURI(CUSTOM_MUSIC_PATH));
+        AUDIO.musicElement.loop = true;
+        AUDIO.musicElement.preload = 'auto';
+        AUDIO.musicElement.volume = 1;
+    }
 
-        const step = AUDIO.musicPattern[AUDIO.musicStep % AUDIO.musicPattern.length];
-        const now = AUDIO.context.currentTime;
-        playHumNote(step.bass, 1.28, 0.07, now, 0.1, 0.3, 520, 4);
-        playHumNote(step.drone, 1.32, 0.04, now + 0.04, 0.14, 0.34, 460, 3);
-        playHumNote(step.chord[0], 0.92, 0.036, now + 0.18, 0.08, 0.22, 900, 6);
-        playHumNote(step.chord[1], 0.92, 0.03, now + 0.28, 0.08, 0.22, 860, 6);
-        playHumNote(step.chord[2], 0.92, 0.024, now + 0.38, 0.08, 0.22, 820, 6);
-        playHumNote(step.melody[0], 0.34, 0.03, now + 0.56, 0.03, 0.1, 1200, 7);
-        playHumNote(step.melody[1], 0.34, 0.027, now + 0.92, 0.03, 0.1, 1200, 7);
-        playHumNote(step.melody[2], 0.38, 0.032, now + 1.22, 0.03, 0.12, 1250, 8);
-        AUDIO.musicStep += 1;
-    };
-
-    playStep();
-    AUDIO.musicTimerId = window.setInterval(playStep, 1500);
+    AUDIO.musicElement.currentTime = AUDIO.musicElement.currentTime || 0;
+    const playPromise = AUDIO.musicElement.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+    }
 }
 
 function stopBackgroundMusic() {
-    if (AUDIO.musicTimerId) {
-        window.clearInterval(AUDIO.musicTimerId);
-        AUDIO.musicTimerId = null;
+    if (AUDIO.musicElement) {
+        AUDIO.musicElement.pause();
     }
 }
 
@@ -907,45 +891,6 @@ function playSynthNote(midiNote, duration, waveType, volume, startTime, attack, 
     gainNode.connect(AUDIO.context.destination);
     oscillator.start(startTime);
     oscillator.stop(endTime + release + 0.02);
-}
-
-function playHumNote(midiNote, duration, volume, startTime, attack, release, cutoff, detuneCents) {
-    if (!AUDIO.context) {
-        return;
-    }
-
-    const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
-    const endTime = startTime + duration;
-    const gainNode = AUDIO.context.createGain();
-    const filter = AUDIO.context.createBiquadFilter();
-    const primaryOsc = AUDIO.context.createOscillator();
-    const secondaryOsc = AUDIO.context.createOscillator();
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(cutoff, startTime);
-    filter.Q.setValueAtTime(1.2, startTime);
-
-    primaryOsc.type = 'sine';
-    primaryOsc.frequency.setValueAtTime(frequency, startTime);
-    primaryOsc.detune.setValueAtTime(-detuneCents, startTime);
-
-    secondaryOsc.type = 'triangle';
-    secondaryOsc.frequency.setValueAtTime(frequency, startTime);
-    secondaryOsc.detune.setValueAtTime(detuneCents, startTime);
-
-    gainNode.gain.setValueAtTime(0.0001, startTime);
-    gainNode.gain.exponentialRampToValueAtTime(volume, startTime + attack);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, endTime + release);
-
-    primaryOsc.connect(filter);
-    secondaryOsc.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(AUDIO.context.destination);
-
-    primaryOsc.start(startTime);
-    secondaryOsc.start(startTime);
-    primaryOsc.stop(endTime + release + 0.04);
-    secondaryOsc.stop(endTime + release + 0.04);
 }
 
 function playWoodTap(startTime) {
