@@ -20,11 +20,24 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
+        #game-shell {
+            width: min(1120px, calc(100vw - 32px));
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: minmax(0, auto) minmax(300px, 360px);
+            gap: 24px;
+            align-items: start;
+        }
+        #board-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         #chessboard {
             display: grid;
             grid-template-columns: repeat(8, 72px);
             grid-template-rows: repeat(8, 72px);
-            margin-top: 24px;
+            margin-top: 16px;
             border: 14px solid #4b3224;
             border-radius: 12px;
             box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(255, 242, 223, 0.12);
@@ -71,12 +84,92 @@
             pointer-events: none;
         }
         #status {
-            margin-top: 14px;
+            margin-top: 0;
             padding: 10px 18px;
             border-radius: 999px;
             font-size: 20px;
             background: rgba(255, 248, 233, 0.12);
             box-shadow: inset 0 0 0 1px rgba(255, 245, 228, 0.14);
+        }
+        #bot-commentary {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        #bot-portrait-card {
+            min-height: 214px;
+            padding: 14px 12px 16px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255, 248, 233, 0.16) 0%, rgba(76, 53, 38, 0.22) 100%);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 237, 211, 0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            cursor: default;
+            transform: none;
+        }
+        #bot-portrait-card:hover {
+            transform: none;
+            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 237, 211, 0.12);
+        }
+        #bot-portrait-shell {
+            min-height: 126px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #bot-portrait-shell .bot-avatar {
+            margin: 0;
+            transform: scale(1.02);
+        }
+        .commentator-meta {
+            margin-top: 10px;
+        }
+        #trash-talk {
+            padding: 14px 16px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(34, 23, 18, 0.76) 0%, rgba(18, 13, 10, 0.86) 100%);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 237, 211, 0.1);
+            color: #f8eedf;
+            position: relative;
+            min-height: 132px;
+        }
+        #trash-talk::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 36px;
+            width: 24px;
+            height: 24px;
+            background: rgba(27, 19, 15, 0.92);
+            transform: rotate(45deg);
+            border-radius: 4px;
+            box-shadow: inset 1px 1px 0 rgba(255, 237, 211, 0.08);
+        }
+        #trash-talk-name {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #f2c47b;
+        }
+        #trash-talk-note {
+            display: block;
+            margin-top: 4px;
+            font-size: 13px;
+            letter-spacing: 0.03em;
+            color: rgba(255, 239, 214, 0.72);
+        }
+        #trash-talk-message {
+            margin: 10px 0 0;
+            font-size: 20px;
+            line-height: 1.45;
+            color: #fff6ea;
         }
         .menu-panel {
             background: linear-gradient(180deg, #fff7ea 0%, #ead8bb 100%);
@@ -1132,13 +1225,37 @@
             bottom: 18px;
         }
         @media (max-width: 860px) {
+            #game-shell {
+                grid-template-columns: 1fr;
+            }
             .bot-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            #bot-commentary {
+                width: min(760px, calc(100vw - 32px));
+            }
+            #bot-portrait-card {
+                min-height: 0;
+                flex-direction: row;
+                justify-content: center;
+                gap: 14px;
+                text-align: left;
+            }
+            .commentator-meta {
+                margin-top: 0;
+            }
+            #trash-talk::before {
+                left: 34px;
+                top: -12px;
             }
         }
         @media (max-width: 520px) {
             .bot-grid {
                 grid-template-columns: 1fr;
+            }
+            #game-shell {
+                width: min(100vw - 16px, 1120px);
+                gap: 14px;
             }
             #chessboard {
                 grid-template-columns: repeat(8, 42px);
@@ -1150,6 +1267,19 @@
             }
             .piece {
                 font-size: 28px;
+            }
+            #bot-commentary {
+                width: min(100vw - 16px, 760px);
+                gap: 12px;
+            }
+            #bot-portrait-card {
+                padding: 12px;
+            }
+            #bot-portrait-shell .bot-avatar {
+                transform: scale(0.84);
+            }
+            #trash-talk-message {
+                font-size: 16px;
             }
         }
     </style>
@@ -1529,13 +1659,29 @@
             </div>
         </div>
     </div>
-    <div id="status">Your move (White)</div>
+    <div id="game-shell">
+        <div id="board-column">
+            <div id="status">Your move (White)</div>
+            <div id="chessboard"></div>
+        </div>
+        <div id="bot-commentary">
+            <div id="bot-portrait-card" class="bot-btn bot-easy tone-light char-milo">
+                <div id="bot-portrait-shell"></div>
+                <div class="commentator-meta">
+                    <span id="trash-talk-name">Bot Booth</span>
+                    <span id="trash-talk-note">Select a challenger</span>
+                </div>
+            </div>
+            <div id="trash-talk" aria-live="polite">
+                <p id="trash-talk-message">Pick a bot and it will start talking.</p>
+            </div>
+        </div>
+    </div>
     <div id="gameover-title" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:20;align-items:center;justify-content:center;flex-direction:column;font-size:64px;color:#fff;font-weight:bold;text-shadow:2px 2px 8px #000;">
         <span id="gameover-heading">Game Over</span>
         <div id="gameover-msg" style="font-size:32px;margin-top:20px;"></div>
         <button id="restart-btn" style="margin-top:40px;font-size:28px;padding:12px 36px;border-radius:8px;border:none;background:#2196f3;color:#fff;cursor:pointer;box-shadow:0 2px 8px #0003;">Restart</button>
     </div>
-    <div id="chessboard"></div>
     <script src="script.js"></script>
 </body>
 </html>

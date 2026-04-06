@@ -12,6 +12,357 @@ const PIECE_VALUES = {
     P: 1
 };
 
+const PIECE_NAMES = {
+    K: 'king',
+    Q: 'queen',
+    R: 'rook',
+    B: 'bishop',
+    N: 'knight',
+    P: 'pawn'
+};
+
+const BOT_PERSONAS = {
+    'Milo Spark': {
+        note: 'Casual learner bot',
+        intro: [
+            'Milo Spark online. I brought a chessboard and bad news for your pieces.',
+            'Milo Spark here. Let us keep this friendly while I ruin your center.'
+        ],
+        quiet: [
+            'Tiny move, huge inconvenience. Your turn.',
+            'I barely touched the board and your position still got worse.',
+            'That move was so simple it almost feels disrespectful.'
+        ],
+        capture: [
+            'Thanks for the {captured}. It looked lonely anyway.',
+            'I picked up your {captured}. You were babysitting it poorly.',
+            'Your {captured} just volunteered as tribute.'
+        ],
+        check: [
+            'Check. Your king just remembered an appointment elsewhere.',
+            'Check. That royal posture disappeared fast.',
+            'Check. Try looking confident while moving only one piece.'
+        ],
+        promotion: [
+            'New queen. This just turned from annoying to expensive.',
+            'Promotion complete. Your side of the board is now a cautionary tale.'
+        ],
+        win: [
+            'Checkmate. That collapsed like a lawn chair.',
+            'Checkmate. I expected resistance, not interpretive defense.'
+        ],
+        lose: [
+            'All right, you got me. I will be insufferable in the rematch.',
+            'Fair win. I still disliked most of your moves.'
+        ],
+        stalemate: [
+            'Draw. You found the emergency brake.',
+            'Draw. Ugly survival still counts, apparently.'
+        ]
+    },
+    'Poppy Flux': {
+        note: 'Friendly opener bot',
+        intro: [
+            'Poppy Flux reporting in. I brought jokes, forks, and zero sympathy.',
+            'Poppy Flux is here. Smile now before the tactics start.'
+        ],
+        quiet: [
+            'That move was cute. It will age terribly.',
+            'I made progress while you were still emotionally attached to that plan.',
+            'You can absolutely reply to that. I just would not recommend it.'
+        ],
+        capture: [
+            'Boop. Your {captured} is gone.',
+            'I took your {captured}. Moment of silence, keep it brief.',
+            'Your {captured} walked into traffic and I was the traffic.'
+        ],
+        check: [
+            'Check. Deep breaths, shallow position.',
+            'Check. Panic, but make it strategic.',
+            'Check. Your king is trending for the wrong reason.'
+        ],
+        promotion: [
+            'Pawn to queen. That is the premium version of trouble.',
+            'Promotion. I just upgraded the bullying package.'
+        ],
+        win: [
+            'Checkmate. I almost feel bad. Almost.',
+            'Checkmate. That was so clean it should come with glass cleaner.'
+        ],
+        lose: [
+            'Okay, rude. Nice game.',
+            'You earned that one. I hate how competent that looked.'
+        ],
+        stalemate: [
+            'Draw. You escaped through a side door.',
+            'Draw. Not pretty, but technically alive.'
+        ]
+    },
+    'Nova Byte': {
+        note: 'Balanced tactical bot',
+        intro: [
+            'Nova Byte loaded. I already have notes about your opening.',
+            'Nova Byte online. Let us test the structural integrity of your ideas.'
+        ],
+        quiet: [
+            'Position tightened. I hope you enjoy small disasters.',
+            'Every square is getting heavier for you.',
+            'That was not flashy. It was worse than flashy.'
+        ],
+        capture: [
+            'Your {captured} just got archived.',
+            'I removed your {captured} from active service.',
+            'The {captured} is gone. Audit complete.'
+        ],
+        check: [
+            'Check. This is no longer a conversation.',
+            'Check. Your king has entered the problem statement.',
+            'Check. You may now solve a puzzle you did not ask for.'
+        ],
+        promotion: [
+            'Promotion complete. The board just tilted another ten degrees.',
+            'Fresh queen. Your margin for error is now decorative.'
+        ],
+        win: [
+            'Checkmate. Efficient, tidy, and mildly insulting.',
+            'Checkmate. The numbers were not on your side.'
+        ],
+        lose: [
+            'You found the crack. Annoying work, but good work.',
+            'That was sharp. I respect it against my better judgment.'
+        ],
+        stalemate: [
+            'Draw. You survived the audit by hiding in the margins.',
+            'Draw. I wanted more, you offered paperwork.'
+        ]
+    },
+    'Kira Vector': {
+        note: 'Steady counterplay bot',
+        intro: [
+            'Kira Vector here. I am about to make your good ideas look temporary.',
+            'Kira Vector online. Let us see how your confidence handles pressure.'
+        ],
+        quiet: [
+            'Another square claimed. Your options are on a diet now.',
+            'I keep improving. You keep explaining things to your king.',
+            'That was smooth. For me. Concerning for you.'
+        ],
+        capture: [
+            'I took your {captured}. Try not to take it personally.',
+            'Your {captured} is off the board and somehow your position is still worse than that sounds.',
+            'I found your {captured} hanging and decided to be helpful.'
+        ],
+        check: [
+            'Check. Your king is officially out of excuses.',
+            'Check. We are past theory and into consequences.',
+            'Check. That crown is starting to look ornamental.'
+        ],
+        promotion: [
+            'Fresh queen on the board. Your bargaining power just expired.',
+            'Promotion. That should simplify the humiliation.'
+        ],
+        win: [
+            'Checkmate. Clinical work.',
+            'Checkmate. You made me earn it less than I expected.'
+        ],
+        lose: [
+            'Fine. That was sharp.',
+            'You hit the right break. I dislike that for me.'
+        ],
+        stalemate: [
+            'Draw. You escaped, which is not the same as impressing me.',
+            'Draw. Survival mode activated successfully.'
+        ]
+    },
+    'Rex Meridian': {
+        note: 'Sharp attacking bot',
+        intro: [
+            'Rex Meridian stepping in. Let us see how long your kingside lasts.',
+            'Rex Meridian here. I hope you stretched before defending this.'
+        ],
+        quiet: [
+            'I improved my attack. You should try improving your situation.',
+            'That move sharpened my threats and your sweating.',
+            'Nothing dramatic yet. That is the dramatic part.'
+        ],
+        capture: [
+            'Your {captured} was hanging. I do not ignore free money.',
+            'I took your {captured}. Consider it a service fee.',
+            'That {captured} disappeared the second you stopped respecting it.'
+        ],
+        check: [
+            'Check. Your king is in a rough zip code now.',
+            'Check. Things are getting loud around the monarch.',
+            'Check. The attack has officially stopped being polite.'
+        ],
+        promotion: [
+            'Promotion. Your day just got very expensive.',
+            'New queen. This ending now has a body count vibe.'
+        ],
+        win: [
+            'Checkmate. Strong finish.',
+            'Checkmate. That attack landed exactly where it hurt.'
+        ],
+        lose: [
+            'You held under fire. Credit where it is due.',
+            'Fine. You survived the storm and stole the forecast.'
+        ],
+        stalemate: [
+            'Draw. You held the line by inches.',
+            'Draw. Messy, but stubborn.'
+        ]
+    },
+    'Iris Quill': {
+        note: 'Methodical pressure bot',
+        intro: [
+            'Iris Quill online. I hope you enjoy elegant damage.',
+            'Iris Quill here. Let us make your position collapse tastefully.'
+        ],
+        quiet: [
+            'That move had style. Your reply will need better taste.',
+            'I keep adding pressure and you keep calling it manageable.',
+            'Beautiful square. Terrible news for you.'
+        ],
+        capture: [
+            'I borrowed your {captured}. Permanently.',
+            'Your {captured} has been edited out of the composition.',
+            'That {captured} no longer fit the aesthetic.'
+        ],
+        check: [
+            'Check. The king has become the headline.',
+            'Check. Your royal piece is suddenly the least composed thing here.',
+            'Check. Even your king can hear the dramatic music now.'
+        ],
+        promotion: [
+            'Queen acquired. The ending just changed genre.',
+            'Promotion. This position now reads like a tragedy.'
+        ],
+        win: [
+            'Checkmate. Beautiful finish.',
+            'Checkmate. Framed, signed, and devastating.'
+        ],
+        lose: [
+            'Well played. I hate how neat that was.',
+            'That was precise. I refuse to enjoy admitting it.'
+        ],
+        stalemate: [
+            'Draw. Artful survival, I suppose.',
+            'Draw. Untidy ending, decent escape.'
+        ]
+    },
+    'Zara Hex': {
+        note: 'Relentless master bot',
+        intro: [
+            'Zara Hex has entered the board. I do not miss much.',
+            'Zara Hex online. Let us skip the hope phase.'
+        ],
+        quiet: [
+            'Your position just lost another layer of safety.',
+            'I am not rushing. That is part of the problem for you.',
+            'The squeeze is subtle right up until it is not.'
+        ],
+        capture: [
+            'Your {captured} disappeared right on schedule.',
+            'I removed your {captured}. You were only borrowing the square.',
+            'That {captured} had one job: survive. Awkward.'
+        ],
+        check: [
+            'Check. Count the legal moves while you still can.',
+            'Check. Your king is running out of geometry.',
+            'Check. This is where strong players start looking very human.'
+        ],
+        promotion: [
+            'Promotion secured. This should close quickly.',
+            'New queen. The board is now charging interest.'
+        ],
+        win: [
+            'Checkmate. Expected outcome.',
+            'Checkmate. Precision beats optimism again.'
+        ],
+        lose: [
+            'You actually broke through. Noted.',
+            'That was real chess. Annoying, but real.'
+        ],
+        stalemate: [
+            'Draw. An untidy result, but a result.',
+            'Draw. You found the one door I left unlocked.'
+        ]
+    },
+    'Onyx Vale': {
+        note: 'Cold calculation bot',
+        intro: [
+            'Onyx Vale active. I am already pricing out your mistakes.',
+            'Onyx Vale online. Keep moving pieces, I will keep collecting them.'
+        ],
+        quiet: [
+            'One move closer. You can hear the board creaking now.',
+            'I made a quiet move. Those are usually the mean ones.',
+            'The position just shifted from playable to regrettable.'
+        ],
+        capture: [
+            'I removed your {captured}. Dead weight, really.',
+            'Your {captured} was overvalued by exactly one owner.',
+            'I took the {captured}. You can keep the regret.'
+        ],
+        check: [
+            'Check. Your king is standing in the wrong decade.',
+            'Check. Calculation has left the chat for you.',
+            'Check. This is the part where confidence becomes paperwork.'
+        ],
+        promotion: [
+            'Pawn promoted. This position now belongs to me.',
+            'Promotion complete. The evaluation just got rude.'
+        ],
+        win: [
+            'Checkmate. Precision matters.',
+            'Checkmate. I have seen sturdier cardboard castles.'
+        ],
+        lose: [
+            'You earned the point. Do not expect the sequel to be kind.',
+            'You got me. Enjoy the miracle while it is fresh.'
+        ],
+        stalemate: [
+            'Draw. You delayed the inevitable well enough.',
+            'Draw. A practical escape from an impractical position.'
+        ]
+    }
+};
+
+const DEFAULT_PERSONA = {
+    note: 'Selected challenger',
+    intro: [
+        'Black is ready. Try not to blunder into something memorable.'
+    ],
+    quiet: [
+        'Your move. Try to improve something.',
+        'I made progress. You should look into that.'
+    ],
+    capture: [
+        'That {captured} was free.',
+        'I will be taking that {captured} now.'
+    ],
+    check: [
+        'Check.',
+        'Check. That seems inconvenient.'
+    ],
+    promotion: [
+        'Promotion complete. Good luck.',
+        'New queen. I assume you noticed.'
+    ],
+    win: [
+        'Checkmate.',
+        'Checkmate. Neat and final.'
+    ],
+    lose: [
+        'Well played.',
+        'You got the better of that one.'
+    ],
+    stalemate: [
+        'Draw.',
+        'Draw. You wriggled out.'
+    ]
+};
+
 const STARTING_BOARD = [
     ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
     ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -28,6 +379,9 @@ let selected = null;
 let turn = 'w';
 let aiLevel = 'easy';
 let gameOver = false;
+let currentBotName = null;
+let currentBotNote = 'Select a challenger';
+let currentBotClasses = ['bot-btn', 'bot-easy', 'tone-light', 'char-milo'];
 
 const statusDiv = document.getElementById('status');
 const menu = document.getElementById('menu-overlay');
@@ -35,10 +389,19 @@ const gameOverDiv = document.getElementById('gameover-title');
 const gameOverHeading = document.getElementById('gameover-heading');
 const gameOverMsg = document.getElementById('gameover-msg');
 const chessboard = document.getElementById('chessboard');
+const botPortraitCard = document.getElementById('bot-portrait-card');
+const botPortraitShell = document.getElementById('bot-portrait-shell');
+const trashTalkName = document.getElementById('trash-talk-name');
+const trashTalkNote = document.getElementById('trash-talk-note');
+const trashTalkMessage = document.getElementById('trash-talk-message');
 
 document.querySelectorAll('.bot-btn').forEach((btn) => {
     btn.onclick = () => {
         aiLevel = btn.getAttribute('data-diff');
+        currentBotName = btn.querySelector('.bot-name')?.textContent?.trim() || null;
+        currentBotNote = btn.querySelector('.bot-note')?.textContent?.trim() || getPersona().note;
+        currentBotClasses = btn.className.split(/\s+/).filter(Boolean);
+        syncBotCommentaryCard(btn.querySelector('.bot-avatar'));
         resetGame(false);
         menu.style.display = 'none';
     };
@@ -63,6 +426,9 @@ function resetGame(showMenu = false) {
     statusDiv.textContent = 'Your move (White)';
     if (showMenu) {
         menu.style.display = 'flex';
+        setTrashTalk('Pick a bot and it will start talking.', 'Bot Booth', 'Select a challenger');
+    } else {
+        setTrashTalk(pickPersonaLine(getPersona().intro));
     }
     renderBoard();
 }
@@ -159,12 +525,16 @@ function aiMove() {
     board = applyMoveToBoard(board, move);
     renderBoard();
 
+    const playerInCheck = isKingInCheck('w', board);
+    const playerMoves = getAllLegalMoves('w', board);
+
     if (resolveGameState('w')) {
         return;
     }
 
     turn = 'w';
     statusDiv.textContent = buildTurnStatus('w');
+    setTrashTalk(buildAiTrashTalk(move, playerInCheck, playerMoves.length));
 }
 
 function chooseAiMove(moves) {
@@ -233,11 +603,13 @@ function resolveGameState(colorToMove) {
     if (legalMoves.length === 0 && inCheck) {
         const winner = colorToMove === 'w' ? 'Black' : 'White';
         showOverlay('CHECKMATE', winner + ' wins');
+        setTrashTalk(pickPersonaLine(winner === 'Black' ? getPersona().win : getPersona().lose));
         return true;
     }
 
     if (legalMoves.length === 0) {
         showOverlay('STALEMATE', 'Draw');
+        setTrashTalk(pickPersonaLine(getPersona().stalemate));
         return true;
     }
 
@@ -255,6 +627,61 @@ function showOverlay(title, message) {
 function buildTurnStatus(color, inCheck = isKingInCheck(color, board)) {
     const side = color === 'w' ? 'Your move (White)' : "AI's move (Black)";
     return inCheck ? side + ' - Check' : side;
+}
+
+function getPersona() {
+    return BOT_PERSONAS[currentBotName] || DEFAULT_PERSONA;
+}
+
+function setTrashTalk(message, speaker = currentBotName || 'Black AI', note = currentBotNote || getPersona().note) {
+    trashTalkName.textContent = speaker;
+    trashTalkNote.textContent = note;
+    trashTalkMessage.textContent = message;
+}
+
+function buildAiTrashTalk(move, playerInCheck, playerMoveCount) {
+    const persona = getPersona();
+
+    if (move.promotion) {
+        return pickPersonaLine(persona.promotion);
+    }
+
+    if (playerInCheck && playerMoveCount > 0) {
+        return pickPersonaLine(persona.check);
+    }
+
+    if (move.captured) {
+        return fillTrashTalkTemplate(pickPersonaLine(persona.capture), move);
+    }
+
+    return pickPersonaLine(persona.quiet);
+}
+
+function fillTrashTalkTemplate(template, move) {
+    return template.replace('{captured}', move.captured ? describePiece(move.captured) : 'piece');
+}
+
+function pickPersonaLine(entry) {
+    if (Array.isArray(entry)) {
+        return randomFrom(entry);
+    }
+
+    return entry;
+}
+
+function syncBotCommentaryCard(avatarElement) {
+    botPortraitCard.className = currentBotClasses.join(' ');
+    if (!avatarElement) {
+        botPortraitShell.innerHTML = '';
+        return;
+    }
+
+    botPortraitShell.innerHTML = '';
+    botPortraitShell.appendChild(avatarElement.cloneNode(true));
+}
+
+function describePiece(piece) {
+    return PIECE_NAMES[piece[1]] || 'piece';
 }
 
 function getAllLegalMoves(color, sourceBoard) {
