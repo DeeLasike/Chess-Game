@@ -497,4 +497,5 @@ function getCellElement(row, col) {
 }
 
 resetGame(true);
+audio.startBackgroundMusic();
 updateSoundToggle();

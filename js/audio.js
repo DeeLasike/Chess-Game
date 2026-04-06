@@ -4,8 +4,30 @@ export function createAudioController() {
     const state = {
         enabled: true,
         context: null,
-        musicElement: null
+        musicElement: null,
+        autoplayRetryBound: false
     };
+
+    const retryAutoplayOnGesture = () => {
+        if (!state.enabled) {
+            return;
+        }
+
+        prime();
+        startBackgroundMusic();
+    };
+
+    function bindAutoplayRetry() {
+        if (state.autoplayRetryBound) {
+            return;
+        }
+
+        state.autoplayRetryBound = true;
+        const options = { once: true, passive: true };
+        window.addEventListener('pointerdown', retryAutoplayOnGesture, options);
+        window.addEventListener('keydown', retryAutoplayOnGesture, options);
+        window.addEventListener('touchstart', retryAutoplayOnGesture, options);
+    }
 
     function isEnabled() {
         return state.enabled;
@@ -60,7 +82,9 @@ export function createAudioController() {
 
         const playPromise = state.musicElement.play();
         if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => {});
+            playPromise.catch(() => {
+                bindAutoplayRetry();
+            });
         }
     }
 
