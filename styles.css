@@ -1399,6 +1399,135 @@ body {
             width: 50px;
             bottom: 18px;
         }
+        #gameover-title {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top, rgba(255, 245, 221, 0.18), transparent 28%),
+                rgba(7, 8, 12, 0.76);
+            backdrop-filter: blur(6px);
+        }
+        #gameover-title::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12), transparent 18%),
+                radial-gradient(circle at 82% 24%, rgba(255, 214, 143, 0.14), transparent 18%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+            pointer-events: none;
+        }
+        #gameover-title.winner-white {
+            background:
+                radial-gradient(circle at top, rgba(255, 234, 179, 0.26), transparent 28%),
+                rgba(11, 15, 18, 0.74);
+        }
+        #gameover-title.winner-black {
+            background:
+                radial-gradient(circle at top, rgba(214, 121, 80, 0.24), transparent 28%),
+                rgba(10, 10, 15, 0.78);
+        }
+        #gameover-confetti {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .confetti-wave {
+            position: absolute;
+            inset: 0;
+        }
+        .confetti-piece {
+            position: absolute;
+            top: -14vh;
+            left: var(--confetti-left);
+            width: var(--confetti-size);
+            height: calc(var(--confetti-size) * 0.7);
+            border-radius: 2px;
+            opacity: var(--confetti-opacity);
+            background: var(--confetti-color);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 4px 10px rgba(0, 0, 0, 0.22);
+            animation: confetti-fall var(--confetti-duration) linear forwards;
+            animation-delay: var(--confetti-delay);
+            will-change: transform, opacity;
+        }
+        .confetti-ribbon {
+            width: calc(var(--confetti-size) * 0.42);
+            height: calc(var(--confetti-size) * 1.9);
+            border-radius: 999px;
+        }
+        .gameover-panel {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: min(540px, calc(100vw - 48px));
+            padding: 38px 34px 34px;
+            border-radius: 28px;
+            text-align: center;
+            color: #fff8ea;
+            background:
+                linear-gradient(180deg, rgba(53, 34, 23, 0.9), rgba(21, 14, 11, 0.95)),
+                rgba(24, 18, 15, 0.92);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 240, 214, 0.16);
+        }
+        #gameover-title.winner-white .gameover-panel {
+            background:
+                linear-gradient(180deg, rgba(84, 54, 25, 0.92), rgba(32, 20, 11, 0.96)),
+                rgba(24, 18, 15, 0.92);
+        }
+        #gameover-title.winner-black .gameover-panel {
+            background:
+                linear-gradient(180deg, rgba(64, 34, 22, 0.94), rgba(18, 13, 14, 0.97)),
+                rgba(22, 18, 20, 0.94);
+        }
+        #gameover-heading {
+            font-size: clamp(42px, 8vw, 66px);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-shadow: 0 8px 24px rgba(0, 0, 0, 0.34);
+        }
+        #gameover-msg {
+            margin-top: 18px;
+            font-size: clamp(24px, 4vw, 34px);
+            color: #ffe7b8;
+            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+        }
+        #restart-btn {
+            margin-top: 34px;
+            border: none;
+            padding: 14px 38px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #ffd066 0%, #cf8e28 100%);
+            color: #38210d;
+            font: inherit;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 249, 231, 0.72);
+            transition: transform 140ms ease, filter 140ms ease;
+        }
+        #restart-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translate3d(0, -6vh, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate3d(var(--confetti-drift), 114vh, 0) rotate(var(--confetti-rotate));
+            }
+        }
         @media (max-width: 860px) {
             #game-shell {
                 grid-template-columns: 1fr;
@@ -1480,5 +1609,13 @@ body {
             }
             #trash-talk-message {
                 font-size: 16px;
+            }
+            .gameover-panel {
+                width: min(100vw - 24px, 540px);
+                padding: 30px 20px 24px;
+            }
+            #restart-btn {
+                width: 100%;
+                font-size: 20px;
             }
         }

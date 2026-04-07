@@ -26,15 +26,28 @@ const state = {
     currentBotClasses: ['bot-easy', 'tone-light', 'char-milo'],
     isAnimatingMove: false,
     history: [],
-    pendingAiTimeout: null
+    pendingAiTimeout: null,
+    confettiTimeouts: [],
+    activeConfettiWinner: null,
+    confettiIntervalId: null
 };
 
 const audio = createAudioController();
+
+const WINNER_CONFETTI_COLORS = {
+    White: ['#fff7d8', '#f3c969', '#ff8a5b', '#89d7b6', '#fff2f2'],
+    Black: ['#f6c667', '#d76c52', '#8ecae6', '#c7c4d8', '#f5eee6']
+};
+
+const WINNER_CONFETTI_INITIAL_COUNT = 140;
+const WINNER_CONFETTI_LOOP_COUNT = 54;
+const WINNER_CONFETTI_INTERVAL_MS = 260;
 
 const refs = {
     status: document.getElementById('status'),
     menu: document.getElementById('menu-overlay'),
     gameOver: document.getElementById('gameover-title'),
+    gameOverConfetti: document.getElementById('gameover-confetti'),
     gameOverHeading: document.getElementById('gameover-heading'),
     gameOverMessage: document.getElementById('gameover-msg'),
     restartButton: document.getElementById('restart-btn'),
@@ -84,6 +97,7 @@ refs.soundToggle.onclick = () => {
 
 function resetGame(showMenu = false) {
     clearPendingAiMove();
+    clearWinnerCelebration();
     state.board = cloneBoard(STARTING_BOARD);
     state.selected = null;
     state.turn = 'w';
@@ -282,7 +296,7 @@ function resolveGameState(colorToMove) {
     if (legalMoves.length === 0 && inCheck) {
         const winner = colorToMove === 'w' ? 'Black' : 'White';
         audio.playSoundEffect(winner === 'Black' ? 'win' : 'lose');
-        showOverlay('CHECKMATE', winner + ' wins');
+        showOverlay('CHECKMATE', winner + ' wins', { winner });
         setTrashTalk(pickPersonaLine(winner === 'Black' ? getPersona().win : getPersona().lose));
         return true;
     }
@@ -298,11 +312,89 @@ function resolveGameState(colorToMove) {
     return false;
 }
 
-function showOverlay(title, message) {
+function showOverlay(title, message, options = {}) {
     state.gameOver = true;
     refs.gameOverHeading.textContent = title;
     refs.gameOverMessage.textContent = message;
     refs.gameOver.style.display = 'flex';
+
+    if (options.winner) {
+        startWinnerCelebration(options.winner);
+        return;
+    }
+
+    clearWinnerCelebration();
+}
+
+function startWinnerCelebration(winner) {
+    clearWinnerCelebration();
+    state.activeConfettiWinner = winner;
+    refs.gameOver.classList.toggle('winner-white', winner === 'White');
+    refs.gameOver.classList.toggle('winner-black', winner === 'Black');
+
+    createConfettiWave(winner, WINNER_CONFETTI_INITIAL_COUNT);
+    state.confettiIntervalId = window.setInterval(() => {
+        createConfettiWave(winner, WINNER_CONFETTI_LOOP_COUNT);
+    }, WINNER_CONFETTI_INTERVAL_MS);
+}
+
+function clearWinnerCelebration() {
+    state.activeConfettiWinner = null;
+    refs.gameOver.classList.remove('winner-white', 'winner-black');
+    refs.gameOverConfetti.innerHTML = '';
+
+    if (state.confettiIntervalId !== null) {
+        window.clearInterval(state.confettiIntervalId);
+        state.confettiIntervalId = null;
+    }
+
+    state.confettiTimeouts.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+    });
+    state.confettiTimeouts = [];
+}
+
+function createConfettiWave(winner, count) {
+    if (refs.gameOver.style.display === 'none') {
+        return;
+    }
+
+    const palette = WINNER_CONFETTI_COLORS[winner] || WINNER_CONFETTI_COLORS.White;
+    const wave = document.createElement('div');
+    const fragment = document.createDocumentFragment();
+
+    wave.className = 'confetti-wave';
+
+    for (let index = 0; index < count; index += 1) {
+        const piece = document.createElement('span');
+        const size = 7 + Math.random() * 10;
+        const left = Math.random() * 100;
+        const drift = `${Math.random() * 280 - 140}px`;
+        const duration = `${3.2 + Math.random() * 1.9}s`;
+        const delay = `${Math.random() * 0.45}s`;
+        const rotate = `${Math.random() * 980 - 490}deg`;
+        const opacity = `${0.72 + Math.random() * 0.28}`;
+        const color = palette[Math.floor(Math.random() * palette.length)];
+
+        piece.className = Math.random() > 0.72 ? 'confetti-piece confetti-ribbon' : 'confetti-piece';
+        piece.style.setProperty('--confetti-left', `${left}%`);
+        piece.style.setProperty('--confetti-size', `${size}px`);
+        piece.style.setProperty('--confetti-drift', drift);
+        piece.style.setProperty('--confetti-duration', duration);
+        piece.style.setProperty('--confetti-delay', delay);
+        piece.style.setProperty('--confetti-rotate', rotate);
+        piece.style.setProperty('--confetti-opacity', opacity);
+        piece.style.setProperty('--confetti-color', color);
+        fragment.appendChild(piece);
+    }
+
+    wave.appendChild(fragment);
+    refs.gameOverConfetti.appendChild(wave);
+
+    const removeTimeoutId = window.setTimeout(() => {
+        wave.remove();
+    }, 6000);
+    state.confettiTimeouts.push(removeTimeoutId);
 }
 
 function buildTurnStatus(color, inCheck = isKingInCheck(color, state.board)) {
@@ -395,6 +487,7 @@ function createSnapshot() {
         board: cloneBoard(state.board),
         turn: state.turn,
         gameOver: state.gameOver,
+        activeConfettiWinner: state.activeConfettiWinner,
         statusText: refs.status.textContent,
         trashTalkName: refs.trashTalkName.textContent,
         trashTalkMessage: refs.trashTalkMessage.textContent,
@@ -421,12 +514,20 @@ function restoreSnapshot(snapshot) {
     state.selected = null;
     state.turn = snapshot.turn;
     state.gameOver = snapshot.gameOver;
+    state.activeConfettiWinner = snapshot.activeConfettiWinner;
     refs.status.textContent = snapshot.statusText;
     refs.trashTalkName.textContent = snapshot.trashTalkName;
     refs.trashTalkMessage.textContent = snapshot.trashTalkMessage;
     refs.gameOverHeading.textContent = snapshot.gameOverHeading;
     refs.gameOverMessage.textContent = snapshot.gameOverMessage;
     refs.gameOver.style.display = snapshot.gameOverDisplay;
+
+    if (snapshot.gameOverDisplay !== 'none' && snapshot.activeConfettiWinner) {
+        startWinnerCelebration(snapshot.activeConfettiWinner);
+    } else {
+        clearWinnerCelebration();
+    }
+
     renderBoard();
     updateUndoButton();
 }
