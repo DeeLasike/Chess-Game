@@ -87,10 +87,21 @@
     </div>
     <div id="gameover-title" style="display:none;">
         <div id="gameover-confetti" aria-hidden="true"></div>
-        <div class="gameover-panel">
-            <span id="gameover-heading">Game Over</span>
-            <div id="gameover-msg"></div>
-            <button id="restart-btn" type="button">Restart</button>
+        <div class="gameover-stage">
+            <div id="gameover-crown" aria-hidden="true">
+                <span class="crown-point crown-point-left"></span>
+                <span class="crown-point crown-point-center"></span>
+                <span class="crown-point crown-point-right"></span>
+                <span class="crown-band"></span>
+                <span class="crown-jewel crown-jewel-left"></span>
+                <span class="crown-jewel crown-jewel-center"></span>
+                <span class="crown-jewel crown-jewel-right"></span>
+            </div>
+            <div class="gameover-panel">
+                <span id="gameover-heading">Game Over</span>
+                <div id="gameover-msg"></div>
+                <button id="restart-btn" type="button">Restart</button>
+            </div>
         </div>
     </div>
     <script type="module" src="js/main.js"></script>
