@@ -132,7 +132,8 @@ function renderBoard() {
 
             if (piece) {
                 const pieceElement = document.createElement('span');
-                pieceElement.className = 'piece ' + (piece[0] === 'w' ? 'piece-white' : 'piece-black');
+                pieceElement.className = 'piece piece-' + PIECE_NAMES[piece[1]] + ' ' + (piece[0] === 'w' ? 'piece-white' : 'piece-black');
+                pieceElement.dataset.piece = PIECE_NAMES[piece[1]];
                 pieceElement.textContent = PIECES[piece];
                 cell.appendChild(pieceElement);
             }
