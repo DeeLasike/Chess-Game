@@ -5,7 +5,8 @@ export function createAudioController() {
         enabled: true,
         context: null,
         musicElement: null,
-        autoplayRetryBound: false
+        autoplayRetryBound: false,
+        musicVolume: 0.32
     };
 
     const retryAutoplayOnGesture = () => {
@@ -77,8 +78,10 @@ export function createAudioController() {
             state.musicElement = new Audio(encodeURI(CUSTOM_MUSIC_PATH));
             state.musicElement.loop = true;
             state.musicElement.preload = 'auto';
-            state.musicElement.volume = 1;
+            state.musicElement.volume = state.musicVolume;
         }
+
+        state.musicElement.volume = state.musicVolume;
 
         const playPromise = state.musicElement.play();
         if (playPromise && typeof playPromise.catch === 'function') {
@@ -107,7 +110,7 @@ export function createAudioController() {
         const now = context.currentTime;
 
         if (type === 'move') {
-            playWoodTap(now);
+            playHeavyWoodImpact(now);
             return;
         }
 
@@ -180,6 +183,57 @@ export function createAudioController() {
         playSynthNote(41 * pitchScale, 0.05, 'triangle', 0.04, startTime + 0.01, 0.001, 0.04);
         playSynthNote(50 * pitchScale, 0.035, 'sine', 0.018, startTime + 0.012, 0.001, 0.025);
         playFilteredNoiseBurst(startTime + 0.004, 0.03, 1200, 0.024);
+    }
+
+    function playHeavyWoodImpact(startTime, pitchScale = 1) {
+        if (!state.context) {
+            return;
+        }
+
+        playResonantTone(28 * pitchScale, 0.11, 'triangle', 0.11, startTime, 0.001, 0.085, 520);
+        playResonantTone(35 * pitchScale, 0.085, 'triangle', 0.08, startTime + 0.003, 0.001, 0.06, 1100);
+        playResonantTone(42 * pitchScale, 0.05, 'sine', 0.028, startTime + 0.006, 0.001, 0.04, 1700);
+        playFilteredNoiseBurst(startTime + 0.001, 0.018, 1400, 0.026);
+        playDoorKnockTail(startTime + 0.018, 0.8 * pitchScale);
+    }
+
+    function playResonantTone(midiNote, duration, waveType, volume, startTime, attack, release, cutoff) {
+        if (!state.context) {
+            return;
+        }
+
+        const oscillator = state.context.createOscillator();
+        const filter = state.context.createBiquadFilter();
+        const gainNode = state.context.createGain();
+        const frequency = 440 * Math.pow(2, (midiNote - 69) / 12);
+        const endTime = startTime + duration;
+
+        oscillator.type = waveType;
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.88, endTime);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(cutoff, startTime);
+        filter.Q.setValueAtTime(1.1, startTime);
+
+        gainNode.gain.setValueAtTime(0.0001, startTime);
+        gainNode.gain.exponentialRampToValueAtTime(volume, startTime + attack);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, endTime + release);
+
+        oscillator.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(state.context.destination);
+        oscillator.start(startTime);
+        oscillator.stop(endTime + release + 0.02);
+    }
+
+    function playDoorKnockTail(startTime, pitchScale = 1) {
+        if (!state.context) {
+            return;
+        }
+
+        playResonantTone(33 * pitchScale, 0.055, 'triangle', 0.02, startTime, 0.001, 0.04, 900);
+        playFilteredNoiseBurst(startTime + 0.002, 0.01, 1900, 0.006);
     }
 
     function playFilteredNoiseBurst(startTime, duration, cutoff, volume) {
